@@ -1,0 +1,1 @@
+exception=com.tianhan.cloud.common.dubbo.filter.DubboExceptionFilter

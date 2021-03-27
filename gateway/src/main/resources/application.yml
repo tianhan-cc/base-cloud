@@ -1,0 +1,11 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: getway-servier
+
+dubbo:
+  registry:
+    protocol: nacos
+    address: nacos://${spring.cloud.nacos.server-addr}
