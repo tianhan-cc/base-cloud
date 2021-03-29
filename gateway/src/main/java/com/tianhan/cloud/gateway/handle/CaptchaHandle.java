@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 public class CaptchaHandle {
     @Resource
     private RedisTemplate<String, String> redisTemplate;
-    public static final String CAPTCHA = "captcha";
+    public static final String CAPTCHA = "login:captcha:";
 
     @Bean
     public RouterFunction<ServerResponse> router() {
@@ -56,6 +56,6 @@ public class CaptchaHandle {
     }
 
     public static String obtainRedisKey(String validate) {
-        return String.format("%s:%s", CAPTCHA, validate);
+        return String.format("%s%s", CAPTCHA, validate);
     }
 }

@@ -1,8 +1,8 @@
 package com.tianhan.cloud.common.auth.utils;
 
-import com.tianhan.cloud.common.auth.UserDetail;
+import com.tianhan.cloud.common.auth.UserDetailsImpl;
+import com.tianhan.cloud.common.auth.UserRedisCache;
 import com.tianhan.cloud.common.core.utils.SpringBeanUtils;
-import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * @Author NieAnTai
@@ -17,21 +17,16 @@ public class SecurityUserUtil {
      *
      * @return userinfo
      */
-    public static UserDetail obtainUserDetail() {
+    public static UserDetailsImpl obtainUserDetail() {
         return null;
     }
 
-    /**
-     * 存储用户信息
-     *
-     * @param token jwt
-     * @param user  userinfo
-     */
-    public static void storageUser(String token, UserDetail user) {
-
+    public static UserDetailsImpl obtainUserDetail(String token) {
+        JWTUtil.Infos jwt = JWTUtil.decodedConvertInfos(token);
+        return obtainCache().obtainUserInfo(jwt.getUserKey(), jwt.getUsername());
     }
 
-    private static RedisTemplate<String, Object> obtainRedisTemplate() {
-        return SpringBeanUtils.getBean("redisTemplate");
+    private static UserRedisCache obtainCache() {
+        return SpringBeanUtils.getBean(UserRedisCache.class);
     }
 }

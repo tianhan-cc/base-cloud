@@ -1,8 +1,13 @@
 package com.tianhan.cloud.common.auth;
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author NieAnTai
@@ -11,7 +16,7 @@ import java.util.Date;
  * @Email nieat@foxmail.com
  * @Description
  **/
-public class UserDetail extends UsernamePasswordAuthenticationToken {
+public class UserDetailsImpl implements UserDetails {
     private String id;
     private String username;
     private String password;
@@ -27,11 +32,14 @@ public class UserDetail extends UsernamePasswordAuthenticationToken {
      * 手机号
      */
     private String mobile;
-    private String token;
     /**
      * 管理员标识 0: 不是 1: 是
      */
     private Integer adminFlag;
+    /**
+     * 是否删除 0: 已删除 1: 未删除
+     */
+    private Integer delFlag;
     /**
      * 状态标识 0: 禁用 1：正常
      */
@@ -53,8 +61,51 @@ public class UserDetail extends UsernamePasswordAuthenticationToken {
      */
     private String createUserid;
 
-    public UserDetail(Object principal, Object credentials) {
-        super(principal, credentials);
+    private List<String> authorities;
+
+    /**
+     * 登录来源[PC|APP]
+     */
+    private String loginSource;
+
+    public UserDetailsImpl(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return status == 1;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return delFlag == 1;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return status == 1;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return delFlag == 1;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
     }
 
     public String getId() {
@@ -65,16 +116,8 @@ public class UserDetail extends UsernamePasswordAuthenticationToken {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public void setPassword(String password) {
@@ -103,14 +146,6 @@ public class UserDetail extends UsernamePasswordAuthenticationToken {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 
     public Integer getAdminFlag() {
@@ -159,5 +194,25 @@ public class UserDetail extends UsernamePasswordAuthenticationToken {
 
     public void setCreateUserid(String createUserid) {
         this.createUserid = createUserid;
+    }
+
+    public void setAuthorities(List<String> authorities) {
+        this.authorities = authorities;
+    }
+
+    public Integer getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(Integer delFlag) {
+        this.delFlag = delFlag;
+    }
+
+    public String getLoginSource() {
+        return loginSource;
+    }
+
+    public void setLoginSource(String loginSource) {
+        this.loginSource = loginSource;
     }
 }
