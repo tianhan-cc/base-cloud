@@ -45,14 +45,6 @@ public class UserDetailsImpl implements UserDetails {
      */
     private Integer status;
     /**
-     * 最后登录时间
-     */
-    private Date lastLoginTime;
-    /**
-     * 最后登录IP
-     */
-    private String lastLoginIp;
-    /**
      * 创建时间
      */
     private Date createTime;
@@ -162,22 +154,6 @@ public class UserDetailsImpl implements UserDetails {
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public Date getLastLoginTime() {
-        return lastLoginTime;
-    }
-
-    public void setLastLoginTime(Date lastLoginTime) {
-        this.lastLoginTime = lastLoginTime;
-    }
-
-    public String getLastLoginIp() {
-        return lastLoginIp;
-    }
-
-    public void setLastLoginIp(String lastLoginIp) {
-        this.lastLoginIp = lastLoginIp;
     }
 
     public Date getCreateTime() {

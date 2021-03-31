@@ -10,10 +10,10 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>gateway</module>
-        <module>usercenter</module>
         <module>configcenter</module>
         <module>common</module>
         <module>base-rpc</module>
+        <module>base-service</module>
     </modules>
 
     <properties>
