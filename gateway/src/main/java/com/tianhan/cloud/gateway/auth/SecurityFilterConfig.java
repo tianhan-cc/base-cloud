@@ -1,7 +1,10 @@
 package com.tianhan.cloud.gateway.auth;
 
+import com.tianhan.cloud.common.core.SystemConstant;
 import com.tianhan.cloud.configuration.SecurityProperties;
+import com.tianhan.cloud.gateway.handle.ResponseHandler;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
@@ -27,13 +30,7 @@ public class SecurityFilterConfig {
     @Resource
     private AuthenticationSuccessHandler successHandler;
     @Resource
-    private AuthenticationFailureHandler failureHandler;
-    @Resource
     private SecurityContextRepository contextRepository;
-    @Resource
-    private AuthenticationEntryPoint entryPoint;
-    @Resource
-    private AccessDeniedHandler accessDeniedHandler;
     @Resource
     private AuthenticationConverter authenticationConverter;
     @Resource
@@ -45,14 +42,17 @@ public class SecurityFilterConfig {
         http.authorizeExchange().pathMatchers(securityProperties.getWhitelist()).permitAll()
                 .anyExchange().access(accessAuthorizationManager);
         // 设置登录接口
-        http.formLogin().loginPage("/auth/login")
+        http.formLogin().loginPage(SystemConstant.LOGIN_URL)
                 .authenticationManager(authenticationManager)
                 .authenticationSuccessHandler(successHandler)
-                .authenticationFailureHandler(failureHandler);
+                .authenticationFailureHandler((webFilterExchange, e) -> ResponseHandler.doResponse(webFilterExchange.getExchange(), HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
         // token 认证
         http.securityContextRepository(contextRepository);
         // 异常处理
-        http.exceptionHandling().authenticationEntryPoint(entryPoint).accessDeniedHandler(accessDeniedHandler);
+        http.exceptionHandling()
+                // 鉴权失败异常处理
+                .authenticationEntryPoint(((exchange, e) -> ResponseHandler.doResponse(exchange, HttpStatus.UNAUTHORIZED, SystemConstant.LOGIN_REQUIRE_MSG)))
+                .accessDeniedHandler((exchange,e) -> ResponseHandler.doResponse(exchange, HttpStatus.FORBIDDEN, SystemConstant.PERMISSION_ERROR_MSG));
         // 关闭不必要的功能
         SecurityWebFilterChain chain = http.httpBasic().disable()
                 .logout().disable()

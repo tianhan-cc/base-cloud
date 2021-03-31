@@ -1,9 +1,19 @@
 package com.tianhan.cloud.gateway.auth;
 
-import org.springframework.security.authentication.ReactiveAuthenticationManager;
+import com.tianhan.cloud.common.auth.UserDetailsImpl;
+import com.tianhan.cloud.common.core.SystemConstant;
+import com.tianhan.cloud.gateway.handle.CaptchaHandle;
+import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetailsChecker;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
+
+import javax.annotation.Resource;
 
 /**
  * @Author NieAnTai
@@ -13,9 +23,46 @@ import reactor.core.publisher.Mono;
  * @Description
  **/
 @Component
-public class AuthenticationManager implements  ReactiveAuthenticationManager{
+public class AuthenticationManager implements ReactiveAuthenticationManager {
+    private final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    // TODO 疑问 一
+    private final Scheduler scheduler = Schedulers.boundedElastic();
+
+    @Resource
+    private CaptchaHandle captchaHandle;
+
     @Override
     public Mono<Authentication> authenticate(Authentication authentication) {
-        return null;
+        UsernamePasswordAuthenticationToken tmp = (UsernamePasswordAuthenticationToken) authentication;
+        UserLoginParam loginParam = (UserLoginParam) tmp.getDetails();
+        // 校验参数
+        loginParam.validate();
+        if (!captchaHandle.validatorCaptcha(loginParam.getValidate(), loginParam.getCaptcha())) {
+            throw new BadCredentialsException("验证码错误!");
+        }
+        return obtainUserDetail(loginParam.getUsername())
+                .filter(u -> passwordEncoder.matches(loginParam.getPassword(), u.getPassword()))
+                .switchIfEmpty(Mono.defer(() -> Mono.error(new BadCredentialsException(SystemConstant.LOGIN_ERROR_MSG))))
+                .doOnNext(preAuthenticationChecks::check)
+                .publishOn(scheduler)
+                .map(u -> new UsernamePasswordAuthenticationToken(u, u.getPassword(), u.getAuthorities()));
     }
+
+    public Mono<UserDetailsImpl> obtainUserDetail(String username) {
+        return Mono.justOrEmpty(new UserDetailsImpl("username", "password"));
+    }
+
+    private final UserDetailsChecker preAuthenticationChecks = user -> {
+        if (!user.isAccountNonLocked()) {
+            throw new LockedException("该账户已被锁定，请联系管理");
+        }
+
+        if (!user.isEnabled()) {
+            throw new DisabledException("该账户已被注销，请联系管理");
+        }
+
+        if (!user.isAccountNonExpired()) {
+            throw new AccountExpiredException("该账户已过期，请联系管理");
+        }
+    };
 }

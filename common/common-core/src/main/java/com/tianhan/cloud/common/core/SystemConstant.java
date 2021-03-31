@@ -18,6 +18,8 @@ public final class SystemConstant {
     /**
      * 登录来源
      */
+    public static String LOGIN_URL = "/doAuth";
+    public static String APP_LOGIN_URL = "/doAuth/app";
     public static String TOKEN_PLATFORM = "PLATFORM";
     public static String LOGIN_SOURCE = "PC";
     public static String APP_LOGIN_SOURCE = "APP";
@@ -44,5 +46,5 @@ public final class SystemConstant {
 
     public static String SALT = "?base4cloud~";// 默认盐值
 
-    public static String DEFAULT_PWD = "Gmcc@10086";
+    public static String DEFAULT_PWD = "Zh@1949";
 }

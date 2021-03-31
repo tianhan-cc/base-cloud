@@ -1,6 +1,8 @@
 package com.tianhan.cloud.gateway.auth;
 
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.util.MultiValueMap;
 
 /**
@@ -22,5 +24,20 @@ public class UserLoginParam {
         password = params.getFirst("password");
         captcha = params.getFirst("captcha");
         validate = params.getFirst("validate");
+    }
+
+    public void validate() {
+        if (StringUtils.isBlank(username)) {
+            throw new BadCredentialsException("用户名不能为空!");
+        }
+        if (StringUtils.isBlank(password)) {
+            throw new BadCredentialsException("密码不能为空!");
+        }
+        if (StringUtils.isBlank(captcha)) {
+            throw new BadCredentialsException("验证码不能为空!");
+        }
+        if (StringUtils.isBlank(validate)) {
+            throw new BadCredentialsException("validateKey不能为空!");
+        }
     }
 }
