@@ -1,5 +1,6 @@
 package com.tianhan.cloud.usercenter.controller;
 
+import com.tianhan.cloud.common.web.controller.BaseController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class UserController extends BaseController {
     @GetMapping("/hello")
     public String hello() {
         return "hello";

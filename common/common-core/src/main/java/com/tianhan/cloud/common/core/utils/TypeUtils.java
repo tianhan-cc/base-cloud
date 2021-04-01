@@ -98,7 +98,7 @@ public class TypeUtils {
                     tmp.length() == 0) {
                 return null;
             }
-            if (tmp.indexOf(",") != -1) {
+            if (tmp.contains(",")) {
                 tmp = tmp.replaceAll(",", "");
             }
             if (isNumber(tmp)) {
@@ -123,7 +123,7 @@ public class TypeUtils {
                     tmp.length() == 0) {
                 return null;
             }
-            if (tmp.indexOf(",") != -1) {
+            if (tmp.contains(",")) {
                 tmp = tmp.replaceAll(",", "");
             }
             if (isNumber(tmp)) {
@@ -148,7 +148,7 @@ public class TypeUtils {
                     tmp.length() == 0) {
                 return null;
             }
-            if (tmp.indexOf(",") != -1) {
+            if (tmp.contains(",")) {
                 tmp = tmp.replaceAll(",", "");
             }
             if (isNumeric(tmp)) {
@@ -181,7 +181,7 @@ public class TypeUtils {
             return new BigDecimal((BigInteger) value).divide(div, scale).toString();
         }
         if (value instanceof Number) {
-            return new BigDecimal(((Number) value).doubleValue()).divide(div, scale).toString();
+            return BigDecimal.valueOf(((Number) value).doubleValue()).divide(div, scale).toString();
         }
         throw new ConvertTypeException(String.format("非百分比数值,原始值:%s", value));
     }
@@ -200,7 +200,7 @@ public class TypeUtils {
                     tmp.length() == 0) {
                 return null;
             }
-            if (tmp.indexOf(",") != -1) {
+            if (tmp.contains(",")) {
                 tmp = tmp.replaceAll(",", "");
             }
             if (isNumeric(tmp)) {
@@ -222,7 +222,7 @@ public class TypeUtils {
             return new BigDecimal((BigInteger) value);
         }
         if (value instanceof Number) {
-            return new BigDecimal(((Number) value).doubleValue());
+            return BigDecimal.valueOf(((Number) value).doubleValue());
         }
         if (value instanceof String) {
             String tmp = (String) value;
@@ -231,7 +231,7 @@ public class TypeUtils {
                     tmp.length() == 0) {
                 return null;
             }
-            if (tmp.indexOf(",") != -1) {
+            if (tmp.contains(",")) {
                 tmp = tmp.replaceAll(",", "");
             }
             if (isNumber(tmp)) {
@@ -290,10 +290,10 @@ public class TypeUtils {
         }
         if (value instanceof String) {
             String tmp = (String) value;
-            if (tmp.indexOf("/") != -1) {
+            if (tmp.contains("/")) {
                 tmp = tmp.replaceAll("/", "-");
             }
-            if (tmp.indexOf(".") != -1) {
+            if (tmp.contains(".")) {
                 tmp = tmp.replaceAll("\\.", "-");
             }
             String dateFormat = null;

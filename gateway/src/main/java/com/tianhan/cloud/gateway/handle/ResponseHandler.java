@@ -34,7 +34,7 @@ public class ResponseHandler {
     }
 
     public static Mono<Void> doResponse(ServerWebExchange exchange, HttpStatus status, String msg) {
-        return doResponse(exchange, new ResponseResult(status.value(), msg, null));
+        return doResponse(exchange, new ResponseResult(status.value(), msg));
     }
 
 }

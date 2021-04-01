@@ -2,6 +2,8 @@ package com.tianhan.cloud.common.core;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @Author NieAnTai
  * @Date 2021/3/26 10:06 上午
@@ -10,10 +12,18 @@ import lombok.Data;
  * @Description 请求响应体
  **/
 @Data
-public class ResponseResult {
+public class ResponseResult implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Integer code;
     private String message;
     private Object data;
+
+    public ResponseResult(Integer code, String message) {
+        this.code = code;
+        this.message = message;
+        this.data = "{}";
+    }
 
     public ResponseResult(Integer code, String message, Object data) {
         this.code = code;

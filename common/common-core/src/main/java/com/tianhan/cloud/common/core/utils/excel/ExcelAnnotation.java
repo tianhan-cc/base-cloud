@@ -24,11 +24,11 @@ public class ExcelAnnotation {
     /**
      * 注解类
      */
-    private Class<? extends Annotation> annClass = ExcelTarget.class;
+    private final Class<? extends Annotation> annClass = ExcelTarget.class;
     /**
      * 标记类
      */
-    private final Class zClass;
+    private final Class<?> zClass;
     /**
      * 是否被标记
      */
@@ -42,7 +42,7 @@ public class ExcelAnnotation {
      */
     private List<String> annValue;
 
-    public ExcelAnnotation(Class zClass) {
+    public ExcelAnnotation(Class<?> zClass) {
         this.zClass = zClass;
         analyze();
     }

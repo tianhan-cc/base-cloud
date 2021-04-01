@@ -3,6 +3,7 @@ package com.tianhan.cloud.gateway.auth;
 import com.tianhan.cloud.common.auth.UserDetailsImpl;
 import com.tianhan.cloud.common.core.SystemConstant;
 import com.tianhan.cloud.gateway.handle.CaptchaHandle;
+import com.tianhan.cloud.usercenter.rpc.interfaces.IUsercenterRpc;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsChecker;
@@ -30,6 +31,8 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
 
     @Resource
     private CaptchaHandle captchaHandle;
+    @Resource
+    private IUsercenterRpc userRpc;
 
     @Override
     public Mono<Authentication> authenticate(Authentication authentication) {
@@ -49,7 +52,7 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
     }
 
     public Mono<UserDetailsImpl> obtainUserDetail(String username) {
-        return Mono.justOrEmpty(new UserDetailsImpl("username", "password"));
+        return Mono.justOrEmpty(userRpc.obtainUser(username));
     }
 
     private final UserDetailsChecker preAuthenticationChecks = user -> {
