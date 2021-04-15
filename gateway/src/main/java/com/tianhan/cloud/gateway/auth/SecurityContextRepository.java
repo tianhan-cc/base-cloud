@@ -46,9 +46,8 @@ public class SecurityContextRepository implements ServerSecurityContextRepositor
             } else {
                 throw new BusinessException(HttpStatus.UNAUTHORIZED.value(), SystemConstant.LOGIN_TIMEOUT_MSG);
             }
-        } else {
-            return Mono.empty();
         }
+        return Mono.empty();
     }
 
     @Override

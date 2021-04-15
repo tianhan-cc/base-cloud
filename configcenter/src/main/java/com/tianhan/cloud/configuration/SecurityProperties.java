@@ -16,10 +16,10 @@ public class SecurityProperties {
     /**
      * 白名单
      */
-    private String[] whitelist;
+    private String[] whitelist = new String[]{"/captcha", "/usercenter/user/hello"};
     /**
      * 无须鉴权
      */
-    private String[] permit;
+    private String[] permit = new String[]{"/captcha"};
 
 }

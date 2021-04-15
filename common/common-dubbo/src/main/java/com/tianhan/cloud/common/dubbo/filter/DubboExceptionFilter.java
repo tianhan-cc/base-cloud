@@ -1,5 +1,7 @@
 package com.tianhan.cloud.common.dubbo.filter;
 
+import org.apache.dubbo.common.constants.CommonConstants;
+import org.apache.dubbo.common.extension.Activate;
 import org.apache.dubbo.rpc.filter.ExceptionFilter;
 
 /**
@@ -9,5 +11,6 @@ import org.apache.dubbo.rpc.filter.ExceptionFilter;
  * @Email nieat@foxmail.com
  * @Description 自定义Dubbo异常拦截
  **/
+@Activate(group = CommonConstants.PROVIDER)
 public class DubboExceptionFilter extends ExceptionFilter {
 }

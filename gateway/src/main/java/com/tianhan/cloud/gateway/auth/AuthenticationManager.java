@@ -4,6 +4,7 @@ import com.tianhan.cloud.common.auth.UserDetailsImpl;
 import com.tianhan.cloud.common.core.SystemConstant;
 import com.tianhan.cloud.gateway.handle.CaptchaHandle;
 import com.tianhan.cloud.usercenter.rpc.interfaces.IUsercenterRpc;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsChecker;
@@ -31,7 +32,7 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
 
     @Resource
     private CaptchaHandle captchaHandle;
-    @Resource
+    @DubboReference
     private IUsercenterRpc userRpc;
 
     @Override

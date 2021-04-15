@@ -8,6 +8,7 @@ import com.tianhan.cloud.common.core.SystemConstant;
 import com.tianhan.cloud.gateway.handle.ResponseHandler;
 import com.tianhan.cloud.gateway.utils.ObtainRemoteIp;
 import com.tianhan.cloud.usercenter.rpc.interfaces.IUsercenterRpc;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 public class AuthenticationSuccessHandler implements ServerAuthenticationSuccessHandler {
     @Resource
     private UserRedisCache cache;
-    @Resource
+    @DubboReference
     private IUsercenterRpc userRpc;
 
     @Override

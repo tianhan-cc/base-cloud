@@ -3,7 +3,6 @@ package com.tianhan.cloud.usercenter.rpc;
 import com.tianhan.cloud.common.auth.UserDetailsImpl;
 import com.tianhan.cloud.usercenter.rpc.interfaces.IUsercenterRpc;
 import org.apache.dubbo.config.annotation.DubboService;
-import org.springframework.stereotype.Component;
 
 /**
  * @Author NieAnTai
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Component;
  * @Description
  **/
 @DubboService
-@Component
 public class UsercenterRpcProvider implements IUsercenterRpc {
 
     @Override

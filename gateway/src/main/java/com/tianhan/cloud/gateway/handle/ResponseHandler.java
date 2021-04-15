@@ -19,18 +19,16 @@ import reactor.netty.ByteBufFlux;
 public class ResponseHandler {
 
     public static Mono<Void> doResponse(ServerWebExchange exchange, ResponseResult result) {
-        return Mono.fromRunnable(() -> {
-            ServerHttpResponse response = exchange.getResponse();
-            HttpHeaders headers = response.getHeaders();
-            headers.set(HttpHeaders.CONTENT_TYPE, "application/json;charset=utf-8");
-            // 跨域请求
+        ServerHttpResponse response = exchange.getResponse();
+        HttpHeaders headers = response.getHeaders();
+        headers.set(HttpHeaders.CONTENT_TYPE, "application/json;charset=utf-8");
+        // 跨域请求
 //        headers.set(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
 //        headers.set(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
-            response.setStatusCode(HttpStatus.OK);
-            byte[] dataBytes = JSON.toJSONBytes(result);
-            DataBuffer bodyDataBuffer = response.bufferFactory().wrap(dataBytes);
-            response.writeAndFlushWith(Flux.just(ByteBufFlux.just(bodyDataBuffer)));
-        });
+        response.setStatusCode(HttpStatus.OK);
+        byte[] dataBytes = JSON.toJSONBytes(result);
+        DataBuffer bodyDataBuffer = response.bufferFactory().wrap(dataBytes);
+        return response.writeAndFlushWith(Flux.just(ByteBufFlux.just(bodyDataBuffer)));
     }
 
     public static Mono<Void> doResponse(ServerWebExchange exchange, HttpStatus status, String msg) {

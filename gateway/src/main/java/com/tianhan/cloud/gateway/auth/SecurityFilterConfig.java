@@ -52,13 +52,19 @@ public class SecurityFilterConfig {
         http.exceptionHandling()
                 // 鉴权失败异常处理
                 .authenticationEntryPoint(((exchange, e) -> ResponseHandler.doResponse(exchange, HttpStatus.UNAUTHORIZED, SystemConstant.LOGIN_REQUIRE_MSG)))
-                .accessDeniedHandler((exchange,e) -> ResponseHandler.doResponse(exchange, HttpStatus.FORBIDDEN, SystemConstant.PERMISSION_ERROR_MSG));
+                .accessDeniedHandler((exchange, e) -> ResponseHandler.doResponse(exchange, HttpStatus.FORBIDDEN, SystemConstant.PERMISSION_ERROR_MSG));
         // 关闭不必要的功能
         SecurityWebFilterChain chain = http.httpBasic().disable()
                 .logout().disable()
                 .anonymous().disable()
                 .csrf().disable().build();
         Flux<WebFilter> filters = chain.getWebFilters();
+//        filters.toIterable().forEach(filter -> {
+//            if (filter instanceof AuthenticationWebFilter) {
+//                // 全局传递参数
+//                ((AuthenticationWebFilter) filter).setServerAuthenticationConverter(authenticationConverter);
+//            }
+//        });
         filters.subscribe(filter -> {
             if (filter instanceof AuthenticationWebFilter) {
                 // 全局传递参数
