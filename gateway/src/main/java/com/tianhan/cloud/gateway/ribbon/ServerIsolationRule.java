@@ -11,7 +11,6 @@ import com.netflix.loadbalancer.AbstractLoadBalancerRule;
 import com.netflix.loadbalancer.DynamicServerListLoadBalancer;
 import com.netflix.loadbalancer.Server;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.CollectionUtils;
@@ -38,7 +37,6 @@ public class ServerIsolationRule extends AbstractLoadBalancerRule {
     @Override
     public Server choose(Object key) {
         try {
-            String clusterName = this.nacosDiscoveryProperties.getClusterName();
             String group = this.nacosDiscoveryProperties.getGroup();
             DynamicServerListLoadBalancer loadBalancer = (DynamicServerListLoadBalancer) getLoadBalancer();
             // 获取服务名
@@ -48,30 +46,20 @@ public class ServerIsolationRule extends AbstractLoadBalancerRule {
                     .getNamingService(nacosDiscoveryProperties.getNacosProperties());
             // 获取服务列表
             List<Instance> instances = namingService.selectInstances(name, group, true);
-            if (CollectionUtils.isEmpty(instances)) {
-                log.error("服务名：{} 查不到服务列表", name);
+            List<Instance> sameIsolationInstances = instances.stream()
+                    .filter(instance -> {
+                        // 判断服务隔离标志
+                        String var = instance.getMetadata().getOrDefault("isolation.version", "dev");
+                        return isolation.equals(var);
+                    })
+                    .collect(Collectors.toList());
+            if (CollectionUtils.isEmpty(sameIsolationInstances)) {
+                // 找不到对于隔离服务，返回null
+                log.warn("服务名: {} 隔离标志：{} 找不到服务服务列表", name, isolation);
                 return null;
             }
 
-            List<Instance> instancesToChoose = instances;
-            if (StringUtils.isNotBlank(clusterName)) {
-                List<Instance> sameIsolationInstances = instances.stream()
-                        .filter(instance -> {
-                            // 判断服务隔离标志
-                            String var = instance.getMetadata().getOrDefault("isolation.version", "dev");
-                            return isolation.equals(var);
-                        })
-                        .collect(Collectors.toList());
-                if (!CollectionUtils.isEmpty(sameIsolationInstances)) {
-                    instancesToChoose = sameIsolationInstances;
-                } else {
-                    // 找不到对于隔离服务，返回null
-                    log.warn("服务名: {} 隔离标志：{} 找不到服务服务列表", name, isolation);
-                    return null;
-                }
-            }
-
-            Instance instance = ExtendBalancer.getHostByRandomWeight2(instancesToChoose);
+            Instance instance = ExtendBalancer.getHostByRandomWeight2(sameIsolationInstances);
 
             return new NacosServer(instance);
         } catch (Exception e) {

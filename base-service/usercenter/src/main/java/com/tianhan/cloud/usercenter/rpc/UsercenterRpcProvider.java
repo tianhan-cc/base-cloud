@@ -16,7 +16,7 @@ public class UsercenterRpcProvider implements IUsercenterRpc {
 
     @Override
     public UserDetailsImpl obtainUser(String username) {
-        return null;
+        return new UserDetailsImpl(username, username);
     }
 
     @Override

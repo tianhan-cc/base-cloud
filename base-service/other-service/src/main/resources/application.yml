@@ -1,0 +1,14 @@
+server:
+  port: 9081
+
+spring:
+  application:
+    name: other
+
+dubbo:
+  registry:
+    protocol: nacos
+    address: nacos://${spring.cloud.nacos.server-addr}
+  protocol:
+    name: dubbo
+    port: -1

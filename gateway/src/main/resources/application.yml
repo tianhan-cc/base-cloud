@@ -12,3 +12,11 @@ dubbo:
   protocol:
     name: dubbo
     port: -1
+# hystrix 配置
+hystrix:
+  command:
+    fallbackcmd:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000

@@ -4,11 +4,8 @@ import cn.hutool.captcha.CircleCaptcha;
 import cn.hutool.core.util.RandomUtil;
 import com.tianhan.cloud.common.core.ResponseResult;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
@@ -30,11 +27,6 @@ public class CaptchaHandle {
     @Resource
     private RedisTemplate<String, String> redisTemplate;
     public static final String CAPTCHA = "login:captcha:";
-
-    @Bean
-    public RouterFunction<ServerResponse> router() {
-        return RouterFunctions.route().GET("/captcha", this::createCaptcha).build();
-    }
 
     public Mono<ServerResponse> createCaptcha(ServerRequest request) {
         CircleCaptcha captcha = new CircleCaptcha(200, 100, 5, 20);
