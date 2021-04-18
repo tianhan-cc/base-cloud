@@ -1,0 +1,4 @@
+# Auto Configuration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.springframework.boot.autoconfigure.jdbc.NamedParameterJdbcTemplateConfiguration,\
+com.tianhan.cloud.common.web.config.SimpleDataConfiguration
