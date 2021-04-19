@@ -16,7 +16,7 @@ public class SecurityProperties {
     /**
      * 白名单
      */
-    private String[] whitelist = new String[]{"/captcha", "/usercenter/user/hello"};
+    private String[] whitelist = new String[]{"/captcha", "/usercenter/user/hello","/other/index/"};
     /**
      * 无须鉴权
      */

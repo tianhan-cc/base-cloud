@@ -1,0 +1,4 @@
+# Auto Configuration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration,\
+com.tianhan.cloud.common.auth.SpringFilterConfig

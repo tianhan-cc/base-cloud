@@ -1,8 +1,8 @@
 package com.tianhan.cloud.gateway.auth;
 
+import com.tianhan.cloud.common.auth.SimpleTokenInfo;
 import com.tianhan.cloud.common.auth.UserDetailsImpl;
 import com.tianhan.cloud.common.auth.UserRedisCache;
-import com.tianhan.cloud.common.auth.utils.JWTUtil;
 import com.tianhan.cloud.common.core.SystemConstant;
 import com.tianhan.cloud.common.core.exceptions.BusinessException;
 import org.apache.commons.lang3.StringUtils;
@@ -38,9 +38,9 @@ public class SecurityContextRepository implements ServerSecurityContextRepositor
         token = StringUtils.isNotBlank(token) ? token : request.getQueryParams().getFirst(SystemConstant.TOKEN_KEY);
 
         if (StringUtils.isNotBlank(token)) {
-            JWTUtil.Infos jwt = JWTUtil.decodedConvertInfos(token);
-            if (cache.validateToken(jwt.getTokenKey(), jwt.getUsername(), token)) {
-                UserDetailsImpl user = cache.obtainUserInfo(jwt.getUserKey(), jwt.getUsername());
+            SimpleTokenInfo info = new SimpleTokenInfo(token);
+            if (cache.validateToken(info.getTokenKey(), info.getUsername(), token)) {
+                UserDetailsImpl user = cache.obtainUserInfo(info.getUserKey(), info.getUsername());
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, user.getPassword());
                 return Mono.just(new SecurityContextImpl(authentication));
             } else {

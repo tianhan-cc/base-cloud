@@ -19,6 +19,8 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -40,13 +42,15 @@ public class AuthenticationSuccessHandler implements ServerAuthenticationSuccess
         ServerHttpRequest request = webFilterExchange.getExchange().getRequest();
         UsernamePasswordAuthenticationToken tmp = (UsernamePasswordAuthenticationToken) authentication;
         UserDetailsImpl user = (UserDetailsImpl) tmp.getPrincipal();
-        String token = JWTUtil.getAccessToken(user.getUsername(), SystemConstant.LOGIN_SOURCE);
+        Map<String, String> claim = new HashMap<>(1);
+        claim.put("USERID", user.getId());
+        String token = JWTUtil.getAccessToken(user.getUsername(), SystemConstant.LOGIN_SOURCE, claim);
         user.setLoginSource(SystemConstant.LOGIN_SOURCE);
         userRpc.loginRecord(user.getUsername(),
                 ObtainRemoteIp.create().headers(request.getHeaders()).inetSocket(request.getRemoteAddress()).build().obtainIp(),
                 user.getLoginSource());
         // 存储用户信息
-        cache.storage(user, token, SystemConstant.TOKEN_KEY, SystemConstant.USER_KEY, 3L, TimeUnit.HOURS);
+        cache.storage(user, token, SystemConstant.STORAGE_TOKEN_KEY, SystemConstant.USER_KEY, 3L, TimeUnit.HOURS);
         return ResponseHandler.doResponse(webFilterExchange.getExchange(),
                 new ResponseResult(HttpStatus.OK.value(), SystemConstant.LOGIN_OK_MSG, token));
     }

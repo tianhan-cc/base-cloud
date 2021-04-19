@@ -24,7 +24,6 @@ public final class SystemConstant {
     public static String LOGIN_SOURCE = "PC";
     public static String APP_LOGIN_SOURCE = "APP";
     public static String TOKEN_KEY = "access-token";
-    public static String APP_TOKEN_KEY = "app-access-token";
     /**
      * redis token 存储 KEY 前缀
      */

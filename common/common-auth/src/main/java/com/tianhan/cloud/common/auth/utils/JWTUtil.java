@@ -4,9 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.tianhan.cloud.common.core.SystemConstant;
 import com.tianhan.cloud.common.core.exceptions.JwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,50 +71,6 @@ public class JWTUtil {
         } catch (Exception e) {
             logger.debug("access_token不合法", e);
             throw JwtException.buildValidateError();
-        }
-    }
-
-    public static JWTUtil.Infos decodedConvertInfos(String accessToken) {
-        DecodedJWT decoded = decodedJwt(accessToken);
-        String platform = decoded.getClaim(SystemConstant.TOKEN_PLATFORM).asString();
-        String userKey = platform.equals(SystemConstant.LOGIN_SOURCE) ? SystemConstant.USER_KEY : SystemConstant.APP_USER_KEY;
-        String tokenKey = platform.equals(SystemConstant.LOGIN_SOURCE) ? SystemConstant.APP_TOKEN_KEY : SystemConstant.APP_TOKEN_KEY;
-        return new JWTUtil.Infos(decoded.getSubject(), platform, userKey, tokenKey, decoded.getClaims());
-    }
-
-    public static class Infos {
-        private final String username;
-        private final String platform;
-        private final String userKey;
-        private final String tokenKey;
-        private final Map<String, Claim> claim;
-
-        public Infos(String username, String platform, String userKey, String tokenKey, Map<String, Claim> claim) {
-            this.username = username;
-            this.platform = platform;
-            this.userKey = userKey;
-            this.tokenKey = tokenKey;
-            this.claim = claim;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public String getPlatform() {
-            return platform;
-        }
-
-        public String getUserKey() {
-            return userKey;
-        }
-
-        public String getTokenKey() {
-            return tokenKey;
-        }
-
-        public Claim getClaim(String var) {
-            return claim.get(var);
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.tianhan.cloud.common.auth;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class UserDetailsImpl implements UserDetails {
     private String id;
     private String username;
+    @JSONField(serialize = false)
     private String password;
     /**
      * 部门ID
@@ -53,7 +55,7 @@ public class UserDetailsImpl implements UserDetails {
      */
     private String createUserid;
 
-    private List<String> authorities;
+    private List<String> permissions;
 
     /**
      * 登录来源[PC|APP]
@@ -66,26 +68,31 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     @Override
+    @JSONField(serialize = false)
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        return permissions.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     @Override
+    @JSONField(serialize = false)
     public boolean isAccountNonExpired() {
         return status == 1;
     }
 
     @Override
+    @JSONField(serialize = false)
     public boolean isAccountNonLocked() {
         return delFlag == 1;
     }
 
     @Override
+    @JSONField(serialize = false)
     public boolean isCredentialsNonExpired() {
         return status == 1;
     }
 
     @Override
+    @JSONField(serialize = false)
     public boolean isEnabled() {
         return delFlag == 1;
     }
@@ -172,8 +179,12 @@ public class UserDetailsImpl implements UserDetails {
         this.createUserid = createUserid;
     }
 
-    public void setAuthorities(List<String> authorities) {
-        this.authorities = authorities;
+    public List<String> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<String> permissions) {
+        this.permissions = permissions;
     }
 
     public Integer getDelFlag() {

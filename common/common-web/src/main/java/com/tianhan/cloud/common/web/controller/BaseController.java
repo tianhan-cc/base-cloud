@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BaseController {
 
     protected @ResponseBody
-    ResponseResult doJsonPagerOut(Pager pager){
+    ResponseResult doJsonPagerOut(Pager pager) {
         return new DataPagerResult(pager);
     }
 
@@ -34,7 +34,7 @@ public class BaseController {
     }
 
     @ExceptionHandler(value = {Throwable.class})
-    private ResponseResult throwableHandler() {
+    private ResponseResult throwableHandler(Throwable throwable) {
         return new ResponseResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), "请求失败,请稍后再试!");
     }
 
