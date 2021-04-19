@@ -37,7 +37,7 @@ public class AuthContextFilter extends OncePerRequestFilter {
 
     private static String obtainToke(HttpServletRequest request) {
         String token = request.getHeader(SystemConstant.TOKEN_KEY);
-        if (StringUtil.isBlank(token)) {
+        if (StringUtil.isBlank(token) && StringUtil.isNotBlank(request.getQueryString())) {
             String queryStr = request.getQueryString();
             String[] queryArr = queryStr.split("&");
             for (String q : queryArr) {

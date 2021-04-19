@@ -1,1 +1,3 @@
 exception=com.tianhan.cloud.common.dubbo.filter.DubboExceptionFilter
+customizeContext=com.tianhan.cloud.common.dubbo.filter.CustomizeContextFilter
+hystrix=com.tianhan.cloud.common.dubbo.filter.HystrixFilter
