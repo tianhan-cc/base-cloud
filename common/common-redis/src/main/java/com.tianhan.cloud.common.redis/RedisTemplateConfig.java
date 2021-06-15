@@ -34,6 +34,7 @@ public class RedisTemplateConfig {
         redisTemplate.setValueSerializer(fastJsonRedisSerializer);
         redisTemplate.setHashValueSerializer(fastJsonRedisSerializer);
         redisTemplate.afterPropertiesSet();
+
         return redisTemplate;
     }
 }

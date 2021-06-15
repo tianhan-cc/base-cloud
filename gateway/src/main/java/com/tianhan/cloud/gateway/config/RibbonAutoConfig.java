@@ -1,6 +1,7 @@
-package com.tianhan.cloud.gateway.ribbon;
+package com.tianhan.cloud.gateway.config;
 
 import com.netflix.loadbalancer.IRule;
+import com.tianhan.cloud.gateway.ribbon.ServerIsolationRule;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

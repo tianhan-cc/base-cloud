@@ -19,17 +19,16 @@ public class CustomizeContextFilter implements Filter {
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
         RpcContext context = RpcContext.getContext();
 
-        SimpleTokenInfo local = null;
-        local = AuthContext.getJwtAttributesHolder();
+        SimpleTokenInfo dubbo = null;
+        SimpleTokenInfo local = AuthContext.getJwtAttributesHolder();
 
         if (local != null) {
             // 传递到下一个Dubbo服务
             context.setAttachment("info", local);
         } else {
-            SimpleTokenInfo dubbo = (SimpleTokenInfo) context.getObjectAttachment("info");
+            dubbo = (SimpleTokenInfo) context.getObjectAttachment("info");
             if (dubbo != null) {
                 // 接受上游服务传递下来的信息，绑定到本地
-                local = dubbo;
                 AuthContext.setJwtAttributesHolder(local);
             }
         }
@@ -37,7 +36,7 @@ public class CustomizeContextFilter implements Filter {
         try {
             return invoker.invoke(invocation);
         } finally {
-            if (local != null) {
+            if (dubbo != null) {
                 // 调用结束，清空缓存
                 AuthContext.remove();
             }
