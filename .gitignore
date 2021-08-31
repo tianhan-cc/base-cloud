@@ -45,4 +45,4 @@ dist/
 package-lock
 .groovy
 test/
-config/local.properties
+resources/config/
