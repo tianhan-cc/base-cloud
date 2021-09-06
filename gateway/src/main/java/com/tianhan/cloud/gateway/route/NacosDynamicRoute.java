@@ -55,8 +55,7 @@ public class NacosDynamicRoute implements RouteDefinitionRepository {
         try {
             String routeConfigInfo = nacosConfigManager.getConfigService()
                     .getConfig(dynamicRouteDateId, nacosConfigManager.getNacosConfigProperties().getGroup(), 1000);
-//            route = Flux.fromIterable(JSONObject.parseArray(routeConfigInfo, RouteDefinition.class));
-            route = Flux.fromIterable(JSONObject.parseArray("[]", RouteDefinition.class));
+            route = Flux.fromIterable(JSONObject.parseArray(routeConfigInfo, RouteDefinition.class));
         } catch (NacosException ignore) {
             log.error("动态路由获取失败");
             route = Flux.empty();
