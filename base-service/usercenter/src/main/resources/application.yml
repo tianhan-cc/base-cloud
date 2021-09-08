@@ -5,9 +5,9 @@ spring:
   application:
     name: usercenter
   datasource:
-    url: jdbc:mysql://${gdcmcs.datasource.ip}:3306/usercenter?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
-    username: ${gdcmcs.datasource.username}
-    password: ${gdcmcs.datasource.password}
+    url: jdbc:mysql://${datasource.host}/usercenter?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: ${datasource.username}
+    password: ${datasource.password}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 dubbo:
