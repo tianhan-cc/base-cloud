@@ -1,6 +1,6 @@
 package com.tianhan.cloud.usercenter.rpc;
 
-import com.tianhan.cloud.common.auth.UserDetailsImpl;
+import com.tianhan.cloud.common.auth.UserDetailsUpgrade;
 import com.tianhan.cloud.usercenter.rpc.interfaces.IUsercenterRpc;
 import org.apache.dubbo.config.annotation.DubboService;
 
@@ -15,8 +15,8 @@ import org.apache.dubbo.config.annotation.DubboService;
 public class UsercenterRpcProvider implements IUsercenterRpc {
 
     @Override
-    public UserDetailsImpl obtainUser(String username) {
-        return new UserDetailsImpl(username, username);
+    public UserDetailsUpgrade obtainUser(String username) {
+        return new UserDetailsUpgrade(username, username);
     }
 
     @Override

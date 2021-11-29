@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * @Email nieat@foxmail.com
  * @Description
  **/
-public class UserDetailsImpl implements UserDetails {
+public class UserDetailsUpgrade implements UserDetails {
     private String id;
     private String username;
     @JSONField(serialize = false)
@@ -62,7 +62,7 @@ public class UserDetailsImpl implements UserDetails {
      */
     private String loginSource;
 
-    public UserDetailsImpl(String username, String password) {
+    public UserDetailsUpgrade(String username, String password) {
         this.username = username;
         this.password = password;
     }

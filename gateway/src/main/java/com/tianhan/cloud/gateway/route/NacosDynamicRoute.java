@@ -43,8 +43,6 @@ public class NacosDynamicRoute implements RouteDefinitionRepository {
     private ApplicationEventPublisher publisher;
     @Value("${nacos.config.dynamic-route.date-id}")
     private String dynamicRouteDateId;
-    @Value("${spring.cloud.nacos.config.namespace}")
-    private String configNamespace;
 
     private Flux<RouteDefinition> route;
 

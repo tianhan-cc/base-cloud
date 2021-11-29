@@ -21,8 +21,8 @@ public class UserRedisCache {
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
-    public UserDetailsImpl obtainUserInfo(String userKey, String username) {
-        return (UserDetailsImpl) redisTemplate.boundValueOps(String.format("%s:%s", userKey, username)).get();
+    public UserDetailsUpgrade obtainUserInfo(String userKey, String username) {
+        return (UserDetailsUpgrade) redisTemplate.boundValueOps(String.format("%s:%s", userKey, username)).get();
     }
 
     public boolean validateToken(String tokenKey, String username, String accessToken) {
@@ -34,7 +34,7 @@ public class UserRedisCache {
         redisTemplate.expire(String.format("%s:%s:%s", tokenKey, unit, accessToken), timeout, unit);
     }
 
-    public void storage(UserDetailsImpl user, String accessToken, String tokenKey, String userKey, Long timeout, TimeUnit unit) {
+    public void storage(UserDetailsUpgrade user, String accessToken, String tokenKey, String userKey, Long timeout, TimeUnit unit) {
         // 存储TOKEN信息
         storageToken(user.getUsername(), accessToken, tokenKey, timeout, unit);
         // 存储登录用户信息
@@ -52,13 +52,13 @@ public class UserRedisCache {
                     .sorted((k1, k2) -> {
                         long result = tmp.getLong(k1) - tmp.getLong(k2);
                         return result == 0 ? 0 : result > 0 ? 1 : -1;
-                    }).findFirst().get();
+                    }).findFirst().orElse("");
             redisTemplate.delete(outKey);
         }
         redisTemplate.boundValueOps(String.format("%s:%s:%s", tokenKey, username, accessToken)).set(accessToken, timeout, unit);
     }
 
-    public void storageUser(UserDetailsImpl user, String userKey) {
+    public void storageUser(UserDetailsUpgrade user, String userKey) {
         String key = String.format("%s:%s", userKey, user.getUsername());
         redisTemplate.boundValueOps(key).set(user);
     }

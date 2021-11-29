@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * @Author NieAnTai
@@ -15,8 +16,8 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableDiscoveryClient
 @ComponentScan(basePackages = {"com.tianhan"})
 @SpringBootApplication
+@EnableScheduling
 public class UserCenterApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(UserCenterApplication.class, args);
     }

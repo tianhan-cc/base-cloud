@@ -1,6 +1,6 @@
 package com.tianhan.cloud.gateway.auth;
 
-import com.tianhan.cloud.common.auth.UserDetailsImpl;
+import com.tianhan.cloud.common.auth.UserDetailsUpgrade;
 import com.tianhan.cloud.common.core.SystemConstant;
 import com.tianhan.cloud.gateway.handle.CaptchaHandle;
 import com.tianhan.cloud.usercenter.rpc.interfaces.IUsercenterRpc;
@@ -52,7 +52,7 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
                 .map(u -> new UsernamePasswordAuthenticationToken(u, u.getPassword(), u.getAuthorities()));
     }
 
-    public Mono<UserDetailsImpl> obtainUserDetail(String username) {
+    public Mono<UserDetailsUpgrade> obtainUserDetail(String username) {
         return Mono.justOrEmpty(userRpc.obtainUser(username));
     }
 

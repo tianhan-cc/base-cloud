@@ -1,9 +1,17 @@
 package com.tianhan.cloud.usercenter.controller;
 
+import com.tianhan.cloud.common.core.ResponseResult;
 import com.tianhan.cloud.common.web.controller.BaseController;
-import org.springframework.web.bind.annotation.GetMapping;
+import com.tianhan.cloud.usercenter.param.LoginParam;
+import com.tianhan.cloud.usercenter.param.UserParam;
+import com.tianhan.cloud.usercenter.service.IUserService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 /**
  * @Author NieAnTai
@@ -12,11 +20,21 @@ import org.springframework.web.bind.annotation.RestController;
  * @Email nieat@foxmail.com
  * @Description
  **/
+@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController extends BaseController {
-    @GetMapping("/hello")
-    public String hello() {
-        return "hello";
+    @Resource
+    private IUserService userService;
+
+    @PostMapping("/login")
+    public ResponseResult login(@RequestBody LoginParam login) {
+        return doJsonOut(userService.login(login));
+    }
+
+    @PostMapping("/add")
+    public ResponseResult add(@RequestBody UserParam user) {
+        userService.createUser(user);
+        return doDefaultMsg();
     }
 }

@@ -26,11 +26,11 @@ public class BaseController {
     }
 
     protected ResponseResult doDefaultMsg() {
-        return new ResponseResult(HttpStatus.OK.value(), "操作成功!");
+        return new ResponseResult(HttpStatus.OK.value(), "请求成功!");
     }
 
     protected ResponseResult doJsonOut(Object data) {
-        return new ResponseResult(HttpStatus.OK.value(), "操作成功!", data);
+        return new ResponseResult(HttpStatus.OK.value(), "请求成功!", data);
     }
 
     @ExceptionHandler(value = {Throwable.class})

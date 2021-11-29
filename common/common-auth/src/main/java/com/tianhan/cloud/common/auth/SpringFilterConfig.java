@@ -18,7 +18,6 @@ import org.springframework.web.filter.RequestContextFilter;
 @ConditionalOnBean(RequestContextFilter.class)
 @AutoConfigureAfter(WebMvcAutoConfiguration.class)
 public class SpringFilterConfig {
-
     @Bean
     public AuthContextFilter initFilter() {
         return new AuthContextFilter();
