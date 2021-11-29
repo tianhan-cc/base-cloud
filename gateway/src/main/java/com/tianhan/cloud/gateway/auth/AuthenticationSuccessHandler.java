@@ -46,7 +46,7 @@ public class AuthenticationSuccessHandler implements ServerAuthenticationSuccess
         claim.put("USERID", user.getId());
         String token = JWTUtil.getAccessToken(user.getUsername(), SystemConstant.LOGIN_SOURCE, claim);
         user.setLoginSource(SystemConstant.LOGIN_SOURCE);
-        userRpc.loginRecord(user.getUsername(),
+        userRpc.loginRecord(user.getId(),
                 ObtainRemoteIp.create().headers(request.getHeaders()).inetSocket(request.getRemoteAddress()).build().obtainIp(),
                 user.getLoginSource());
         // 存储用户信息

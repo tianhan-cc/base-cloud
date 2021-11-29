@@ -5,7 +5,7 @@ spring:
   application:
     name: usercenter
   datasource:
-    url: jdbc:mysql://${datasource.host}/user?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://${datasource.host}/user_center?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: ${datasource.username}
     password: ${datasource.password}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -17,3 +17,10 @@ dubbo:
   protocol:
     name: dubbo
     port: -1
+
+mybatis-plus:
+  mapper-locations: classpath*:com/tianhan/**/dao/mapper/*.xml
+  configuration:
+    # sql日志控制台打印
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true

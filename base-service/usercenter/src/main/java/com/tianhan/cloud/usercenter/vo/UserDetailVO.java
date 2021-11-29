@@ -1,6 +1,10 @@
 package com.tianhan.cloud.usercenter.vo;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @Author NieAnTai
@@ -11,4 +15,15 @@ import lombok.Data;
  **/
 @Data
 public class UserDetailVO {
+    private String username;
+    @JSONField(serialize = false)
+    private String password;
+    private String deptId;
+    private String deptName;
+    private String status;
+    private String adminFlag;
+    private String delFlag;
+    private Date loginTime;
+    private String loginIp;
+    private List<String> permissions;
 }

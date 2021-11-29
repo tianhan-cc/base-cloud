@@ -2,7 +2,6 @@ package com.tianhan.cloud.usercenter.controller;
 
 import com.tianhan.cloud.common.core.ResponseResult;
 import com.tianhan.cloud.common.web.controller.BaseController;
-import com.tianhan.cloud.usercenter.param.LoginParam;
 import com.tianhan.cloud.usercenter.param.UserParam;
 import com.tianhan.cloud.usercenter.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -26,11 +25,6 @@ import javax.annotation.Resource;
 public class UserController extends BaseController {
     @Resource
     private IUserService userService;
-
-    @PostMapping("/login")
-    public ResponseResult login(@RequestBody LoginParam login) {
-        return doJsonOut(userService.login(login));
-    }
 
     @PostMapping("/add")
     public ResponseResult add(@RequestBody UserParam user) {

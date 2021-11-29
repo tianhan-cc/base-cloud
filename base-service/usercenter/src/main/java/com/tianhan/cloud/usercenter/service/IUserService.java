@@ -1,9 +1,7 @@
 package com.tianhan.cloud.usercenter.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.tianhan.cloud.common.auth.UserDetailsUpgrade;
 import com.tianhan.cloud.usercenter.entity.UserEntity;
-import com.tianhan.cloud.usercenter.param.LoginParam;
 import com.tianhan.cloud.usercenter.param.UserParam;
 
 /**
@@ -14,14 +12,6 @@ import com.tianhan.cloud.usercenter.param.UserParam;
  * @Description
  **/
 public interface IUserService extends IService<UserEntity> {
-    /**
-     * 登录接口
-     *
-     * @param login 登录信息
-     * @return 用户信息
-     */
-    UserDetailsUpgrade login(LoginParam login);
-
     /**
      * 添加新用户
      * @param user 添加用户信息

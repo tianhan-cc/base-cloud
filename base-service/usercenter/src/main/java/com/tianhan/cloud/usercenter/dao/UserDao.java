@@ -2,7 +2,7 @@ package com.tianhan.cloud.usercenter.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.tianhan.cloud.usercenter.entity.UserEntity;
-import org.apache.ibatis.annotations.Mapper;
+import com.tianhan.cloud.usercenter.vo.UserDetailVO;
 
 /**
  * @Author NieAnTai
@@ -11,6 +11,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @Email nieat@foxmail.com
  * @Description
  **/
-@Mapper
 public interface UserDao extends BaseMapper<UserEntity> {
+    UserDetailVO userinfo(String username);
 }

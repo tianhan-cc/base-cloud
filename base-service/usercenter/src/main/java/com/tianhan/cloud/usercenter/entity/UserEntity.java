@@ -24,9 +24,12 @@ import java.util.Date;
 public class UserEntity extends Model<UserEntity> {
     @TableId(type = IdType.INPUT)
     private String id;
+    private String deptId;
     private String username;
     private String password;
     private Integer status;
+    private Integer adminFlag;
+    private Integer delFlag;
     private Date loginTime;
     private String loginIp;
     private Date createTime;

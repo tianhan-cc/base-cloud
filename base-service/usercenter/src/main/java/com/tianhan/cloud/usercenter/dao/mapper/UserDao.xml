@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tianhan.cloud.usercenter.dao.UserDao">
+
+    <resultMap id="userInfo" type="com.tianhan.cloud.usercenter.vo.UserDetailVO">
+        <id column="id" property="id"/>
+        <collection property="permissions" select="relationRole" column="{authorityId=id}"/>
+    </resultMap>
+
+    <select id="userinfo" resultMap="userInfo">
+        select u.*,d.dept_name from user u inner join dept d on u.dept_id = d.id where u.username = #{username}
+    </select>
+
+    <select id="relationRole" resultType="java.lang.String">
+        select r.permissible_url from role r inner join user_role r2 on r.id = r2.role_id where r2.user_id = #{id}
+    </select>
+</mapper>

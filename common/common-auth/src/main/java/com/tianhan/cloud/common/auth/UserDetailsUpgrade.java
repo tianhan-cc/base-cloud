@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 public class UserDetailsUpgrade implements UserDetails {
     private String id;
     private String username;
-    @JSONField(serialize = false)
     private String password;
     /**
      * 部门ID
