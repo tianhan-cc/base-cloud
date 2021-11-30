@@ -27,13 +27,13 @@ public final class SystemConstant {
     /**
      * redis token 存储 KEY 前缀
      */
-    public static String STORAGE_TOKEN_KEY = "login:admin:token";
+    public static String STORAGE_TOKEN_KEY = "login:pc:token";
     public static String APP_STORAGE_TOKEN_KEY = "login:app:token";
 
     /**
      * redis token 用户信息存储
      */
-    public static String USER_KEY = "login:admin:user";
+    public static String USER_KEY = "login:pc:user";
     public static String APP_USER_KEY = "login:app:user";
 
     public static String PASSWORDENCODERTYPE = "{bcrypt}";
@@ -41,7 +41,7 @@ public final class SystemConstant {
     /**
      * 账号最大同时登录数,默认为1
      */
-    public static Integer ACCOUNT_LOGIN_MAX = 1;
+    public static Integer ACCOUNT_LOGIN_MAX = 3;
 
     public static String SALT = "?base4cloud~";// 默认盐值
 

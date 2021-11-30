@@ -3,6 +3,7 @@ package com.tianhan.cloud.usercenter.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.tianhan.cloud.usercenter.entity.UserEntity;
 import com.tianhan.cloud.usercenter.param.UserParam;
+import com.tianhan.cloud.usercenter.vo.UserDetailVO;
 
 /**
  * @Author NieAnTai
@@ -12,6 +13,13 @@ import com.tianhan.cloud.usercenter.param.UserParam;
  * @Description
  **/
 public interface IUserService extends IService<UserEntity> {
+    /**
+     * 获取用户信息
+     * @param username 用户名
+     * @return 用户信息
+     */
+    UserDetailVO info(String username);
+
     /**
      * 添加新用户
      * @param user 添加用户信息

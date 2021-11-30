@@ -9,8 +9,6 @@ import org.springframework.security.config.annotation.web.reactive.EnableWebFlux
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.AuthenticationWebFilter;
-import org.springframework.web.server.WebFilter;
-import reactor.core.publisher.Flux;
 
 import javax.annotation.Resource;
 
@@ -58,14 +56,7 @@ public class SecurityFilterConfig {
                 .logout().disable()
                 .anonymous().disable()
                 .csrf().disable().build();
-        Flux<WebFilter> filters = chain.getWebFilters();
-//        filters.toIterable().forEach(filter -> {
-//            if (filter instanceof AuthenticationWebFilter) {
-//                // 全局传递参数
-//                ((AuthenticationWebFilter) filter).setServerAuthenticationConverter(authenticationConverter);
-//            }
-//        });
-        filters.subscribe(filter -> {
+        chain.getWebFilters().subscribe(filter -> {
             if (filter instanceof AuthenticationWebFilter) {
                 // 全局传递参数
                 ((AuthenticationWebFilter) filter).setServerAuthenticationConverter(authenticationConverter);

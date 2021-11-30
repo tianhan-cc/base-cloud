@@ -8,11 +8,9 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsChecker;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import javax.annotation.Resource;
@@ -26,9 +24,7 @@ import javax.annotation.Resource;
  **/
 @Component
 public class AuthenticationManager implements ReactiveAuthenticationManager {
-    private final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    // TODO 疑问 一
-    private final Scheduler scheduler = Schedulers.boundedElastic();
+    private final BCryptPasswordEncoder BC = new BCryptPasswordEncoder();
 
     @Resource
     private CaptchaHandle captchaHandle;
@@ -41,14 +37,14 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
         UserLoginParam loginParam = (UserLoginParam) tmp.getDetails();
         // 校验参数
         loginParam.validate();
-        if (!captchaHandle.validatorCaptcha(loginParam.getValidate(), loginParam.getCaptcha())) {
-            throw new BadCredentialsException("验证码错误!");
-        }
+//        if (!captchaHandle.validatorCaptcha(loginParam.getValidate(), loginParam.getCaptcha())) {
+//            throw new BadCredentialsException("验证码错误!");
+//        }
         return obtainUserDetail(loginParam.getUsername())
-                .filter(u -> passwordEncoder.matches(loginParam.getPassword(), u.getPassword()))
+                .filter(u -> BC.matches(loginParam.getPassword(), u.getPassword()))
                 .switchIfEmpty(Mono.defer(() -> Mono.error(new BadCredentialsException(SystemConstant.LOGIN_ERROR_MSG))))
                 .doOnNext(preAuthenticationChecks::check)
-                .publishOn(scheduler)
+                .publishOn(Schedulers.boundedElastic())
                 .map(u -> new UsernamePasswordAuthenticationToken(u, u.getPassword(), u.getAuthorities()));
     }
 

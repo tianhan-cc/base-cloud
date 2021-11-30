@@ -22,7 +22,7 @@ public class ResponseResult implements Serializable {
     public ResponseResult(Integer code, String message) {
         this.code = code;
         this.message = message;
-        this.data = "{}";
+        this.data = "";
     }
 
     public ResponseResult(Integer code, String message, Object data) {

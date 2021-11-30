@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.tianhan.cloud.usercenter.entity.UserEntity;
 import com.tianhan.cloud.usercenter.vo.UserDetailVO;
 
+import java.io.Serializable;
+
 /**
  * @Author NieAnTai
  * @Date 2021/11/26 4:46 下午

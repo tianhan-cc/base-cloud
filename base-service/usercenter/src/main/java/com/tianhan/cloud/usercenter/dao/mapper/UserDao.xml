@@ -8,7 +8,7 @@
     </resultMap>
 
     <select id="userinfo" resultMap="userInfo">
-        select u.*,d.dept_name from user u inner join dept d on u.dept_id = d.id where u.username = #{username}
+        select u.*,d.dept_name from user u left join dept d on u.dept_id = d.id where u.username = #{username}
     </select>
 
     <select id="relationRole" resultType="java.lang.String">

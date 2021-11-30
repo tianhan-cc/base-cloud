@@ -75,13 +75,13 @@ public class UserDetailsUpgrade implements UserDetails {
     @Override
     @JSONField(serialize = false)
     public boolean isAccountNonExpired() {
-        return status == 1;
+        return status == 0;
     }
 
     @Override
     @JSONField(serialize = false)
     public boolean isAccountNonLocked() {
-        return delFlag == 1;
+        return delFlag == 0;
     }
 
     @Override
@@ -93,7 +93,7 @@ public class UserDetailsUpgrade implements UserDetails {
     @Override
     @JSONField(serialize = false)
     public boolean isEnabled() {
-        return delFlag == 1;
+        return delFlag == 0;
     }
 
     @Override

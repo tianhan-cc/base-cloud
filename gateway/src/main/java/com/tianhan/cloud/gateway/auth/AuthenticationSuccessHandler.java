@@ -40,13 +40,13 @@ public class AuthenticationSuccessHandler implements ServerAuthenticationSuccess
     @Override
     public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
         ServerHttpRequest request = webFilterExchange.getExchange().getRequest();
-        UsernamePasswordAuthenticationToken tmp = (UsernamePasswordAuthenticationToken) authentication;
-        UserDetailsUpgrade user = (UserDetailsUpgrade) tmp.getPrincipal();
+        UsernamePasswordAuthenticationToken var = (UsernamePasswordAuthenticationToken) authentication;
+        UserDetailsUpgrade user = (UserDetailsUpgrade) var.getPrincipal();
         Map<String, String> claim = new HashMap<>(1);
         claim.put("USERID", user.getId());
         String token = JWTUtil.getAccessToken(user.getUsername(), SystemConstant.LOGIN_SOURCE, claim);
         user.setLoginSource(SystemConstant.LOGIN_SOURCE);
-        userRpc.loginRecord(user.getId(),
+        userRpc.loginRecord(user.getUsername(),
                 ObtainRemoteIp.create().headers(request.getHeaders()).inetSocket(request.getRemoteAddress()).build().obtainIp(),
                 user.getLoginSource());
         // 存储用户信息

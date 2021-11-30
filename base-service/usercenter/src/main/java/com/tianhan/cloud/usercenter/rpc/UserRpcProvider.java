@@ -1,6 +1,8 @@
 package com.tianhan.cloud.usercenter.rpc;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tianhan.cloud.common.auth.UserDetailsUpgrade;
+import com.tianhan.cloud.common.auth.utils.SecurityUserUtil;
 import com.tianhan.cloud.usercenter.dao.UserDao;
 import com.tianhan.cloud.usercenter.entity.UserEntity;
 import com.tianhan.cloud.usercenter.rpc.interfaces.IUsercenterRpc;
@@ -27,6 +29,11 @@ public class UserRpcProvider implements IUsercenterRpc {
     private UserDao userDao;
 
     @Override
+    public void test() {
+        log.info("测试服务间调用token传递效果,当前用户信息 {}", SecurityUserUtil.obtainUserDetail());
+    }
+
+    @Override
     public UserDetailsUpgrade obtainUser(String username) {
         UserDetailVO user = userDao.userinfo(username);
         UserDetailsUpgrade result = new UserDetailsUpgrade(user.getUsername(), user.getPassword());
@@ -37,8 +44,8 @@ public class UserRpcProvider implements IUsercenterRpc {
 
     @Override
     @Transactional(rollbackFor = {Exception.class, RuntimeException.class})
-    public void loginRecord(String id, String loginIp, String loginSource) {
-        UserEntity user = userDao.selectById(id);
+    public void loginRecord(String username, String loginIp, String loginSource) {
+        UserEntity user = userDao.selectOne(new QueryWrapper<UserEntity>().eq("username", username));
         if (user == null) {
             log.error("无效登录用户ID记录!");
             return;

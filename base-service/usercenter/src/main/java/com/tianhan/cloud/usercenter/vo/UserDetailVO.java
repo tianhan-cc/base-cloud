@@ -15,14 +15,15 @@ import java.util.List;
  **/
 @Data
 public class UserDetailVO {
+    private String id;
     private String username;
     @JSONField(serialize = false)
     private String password;
     private String deptId;
     private String deptName;
-    private String status;
-    private String adminFlag;
-    private String delFlag;
+    private Integer status;
+    private Integer adminFlag;
+    private Integer delFlag;
     private Date loginTime;
     private String loginIp;
     private List<String> permissions;

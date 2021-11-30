@@ -1,12 +1,11 @@
 package com.tianhan.cloud.common.auth;
 
 import com.tianhan.cloud.common.core.SystemConstant;
-import com.tianhan.cloud.common.core.utils.ConvertMap;
+import org.springframework.data.redis.core.BoundZSetOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -26,8 +25,8 @@ public class UserRedisCache {
     }
 
     public boolean validateToken(String tokenKey, String username, String accessToken) {
-        Boolean f = redisTemplate.hasKey(String.format("%s:%s:%s", tokenKey, username, accessToken));
-        return f != null ? f : false;
+        Double f = redisTemplate.boundZSetOps(String.format("%s:%s", tokenKey, username)).score(accessToken);
+        return f != null;
     }
 
     public void updateTokenExpire(String tokenKey, String username, String accessToken, Long timeout, TimeUnit unit) {
@@ -42,20 +41,14 @@ public class UserRedisCache {
     }
 
     public void storageToken(String username, String accessToken, String tokenKey, Long timeout, TimeUnit unit) {
-        Set<String> tokenKeys = redisTemplate.keys(String.format("%s:%s:*", tokenKey, username));
-        int size = tokenKeys != null ? tokenKeys.size() : 0;
-        if (size >= SystemConstant.ACCOUNT_LOGIN_MAX) {
-            // 超出最大次数，挤掉快超时token
-            ConvertMap tmp = new ConvertMap(size);
-            tokenKeys.forEach(key -> tmp.put(key, redisTemplate.getExpire(key)));
-            String outKey = tmp.keySet().stream()
-                    .sorted((k1, k2) -> {
-                        long result = tmp.getLong(k1) - tmp.getLong(k2);
-                        return result == 0 ? 0 : result > 0 ? 1 : -1;
-                    }).findFirst().orElse("");
-            redisTemplate.delete(outKey);
+        BoundZSetOperations<String, Object> zSet = redisTemplate.boundZSetOps(String.format("%s:%s", tokenKey, username));
+        if (zSet.zCard() >= SystemConstant.ACCOUNT_LOGIN_MAX) {
+            // 超出最大登录次数
+            zSet.removeRange(0, 0);
         }
-        redisTemplate.boundValueOps(String.format("%s:%s:%s", tokenKey, username, accessToken)).set(accessToken, timeout, unit);
+        zSet.add(accessToken, (double) (System.currentTimeMillis() << 2));
+        // 刷新Token过期时间
+        zSet.expire(timeout, unit);
     }
 
     public void storageUser(UserDetailsUpgrade user, String userKey) {

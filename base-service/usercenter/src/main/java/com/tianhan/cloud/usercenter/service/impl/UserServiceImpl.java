@@ -7,6 +7,7 @@ import com.tianhan.cloud.usercenter.dao.UserDao;
 import com.tianhan.cloud.usercenter.entity.UserEntity;
 import com.tianhan.cloud.usercenter.param.UserParam;
 import com.tianhan.cloud.usercenter.service.IUserService;
+import com.tianhan.cloud.usercenter.vo.UserDetailVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,6 +28,11 @@ import java.util.Date;
 @Transactional(rollbackFor = {Exception.class, RuntimeException.class})
 public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements IUserService {
     private static final BCryptPasswordEncoder BC = new BCryptPasswordEncoder();
+
+    @Override
+    public UserDetailVO info(String username) {
+        return baseMapper.userinfo(username);
+    }
 
     @Override
     public void createUser(UserParam user) {
