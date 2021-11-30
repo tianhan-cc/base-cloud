@@ -16,4 +16,5 @@ public class UserParam {
      * 前端MD5加密
      */
     private String password;
+    private Integer adminFlag;
 }
