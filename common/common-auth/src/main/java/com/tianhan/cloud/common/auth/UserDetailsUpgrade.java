@@ -1,6 +1,7 @@
 package com.tianhan.cloud.common.auth;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
  * @Email nieat@foxmail.com
  * @Description
  **/
+@Data
 public class UserDetailsUpgrade implements UserDetails {
     private String id;
     private String username;
@@ -60,6 +62,9 @@ public class UserDetailsUpgrade implements UserDetails {
      * 登录来源[PC|APP]
      */
     private String loginSource;
+
+    public UserDetailsUpgrade() {
+    }
 
     public UserDetailsUpgrade(String username, String password) {
         this.username = username;

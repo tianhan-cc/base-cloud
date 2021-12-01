@@ -27,12 +27,13 @@ public class RedisTemplateConfig {
         log.info(String.format("=====启用redis,工厂实例:%s=====", factory.getClass().getSimpleName()));
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(factory);
-        RedisSerializer stringSerializer = new StringRedisSerializer();
-        FastJsonRedisSerializer<Object> fastJsonRedisSerializer = new FastJsonRedisSerializer<Object>(Object.class);
+        RedisSerializer<String> stringSerializer = new StringRedisSerializer();
+        FastJsonRedisSerializer<Object> jackson = new FastJsonRedisSerializer<>(Object.class);
         redisTemplate.setKeySerializer(stringSerializer);
         redisTemplate.setHashKeySerializer(stringSerializer);
-        redisTemplate.setValueSerializer(fastJsonRedisSerializer);
-        redisTemplate.setHashValueSerializer(fastJsonRedisSerializer);
+        redisTemplate.setDefaultSerializer(jackson);
+        redisTemplate.setValueSerializer(jackson);
+        redisTemplate.setHashValueSerializer(jackson);
         redisTemplate.afterPropertiesSet();
 
         return redisTemplate;

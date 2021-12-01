@@ -14,7 +14,7 @@
 
     <modules>
         <module>usercenter</module>
-        <module>other-service</module>
+        <module>test-service</module>
     </modules>
 
     <properties>

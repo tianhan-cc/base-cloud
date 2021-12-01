@@ -1,11 +1,10 @@
 package com.tianhan.cloud.common.auth;
 
 import com.tianhan.cloud.common.core.SystemConstant;
+import com.tianhan.cloud.common.redis.CacheUtils;
 import org.springframework.data.redis.core.BoundZSetOperations;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -17,42 +16,43 @@ import java.util.concurrent.TimeUnit;
  **/
 @Component
 public class UserRedisCache {
-    @Resource
-    private RedisTemplate<String, Object> redisTemplate;
-
     public UserDetailsUpgrade obtainUserInfo(String userKey, String username) {
-        return (UserDetailsUpgrade) redisTemplate.boundValueOps(String.format("%s:%s", userKey, username)).get();
+        return CacheUtils.getVal(template -> template.boundValueOps(String.format("%s:%s", userKey, username)).get(), UserDetailsUpgrade.class);
     }
 
     public boolean validateToken(String tokenKey, String username, String accessToken) {
-        Double f = redisTemplate.boundZSetOps(String.format("%s:%s", tokenKey, username)).score(accessToken);
-        return f != null;
+        return CacheUtils.predicate(template -> {
+            Double f = template.boundZSetOps(String.format("%s:%s", tokenKey, username)).score(accessToken);
+            return f != null;
+        });
     }
 
     public void updateTokenExpire(String tokenKey, String username, String accessToken, Long timeout, TimeUnit unit) {
-        redisTemplate.expire(String.format("%s:%s:%s", tokenKey, unit, accessToken), timeout, unit);
+        CacheUtils.exec(template -> template.expire(String.format("%s:%s:%s", tokenKey, unit, accessToken), timeout, unit));
     }
 
     public void storage(UserDetailsUpgrade user, String accessToken, String tokenKey, String userKey, Long timeout, TimeUnit unit) {
         // 存储TOKEN信息
         storageToken(user.getUsername(), accessToken, tokenKey, timeout, unit);
         // 存储登录用户信息
-        storageUser(user, userKey);
+        storageUser(user, userKey, timeout, unit);
     }
 
     public void storageToken(String username, String accessToken, String tokenKey, Long timeout, TimeUnit unit) {
-        BoundZSetOperations<String, Object> zSet = redisTemplate.boundZSetOps(String.format("%s:%s", tokenKey, username));
-        if (zSet.zCard() >= SystemConstant.ACCOUNT_LOGIN_MAX) {
-            // 超出最大登录次数
-            zSet.removeRange(0, 0);
-        }
-        zSet.add(accessToken, (double) (System.currentTimeMillis() << 2));
-        // 刷新Token过期时间
-        zSet.expire(timeout, unit);
+        CacheUtils.exec((template) -> {
+            BoundZSetOperations<String, Object> zSet = template.boundZSetOps(String.format("%s:%s", tokenKey, username));
+            if (zSet.zCard() >= SystemConstant.ACCOUNT_LOGIN_MAX) {
+                // 超出最大登录次数
+                zSet.removeRange(0, 0);
+            }
+            zSet.add(accessToken, (double) (System.currentTimeMillis() << 2));
+            // 刷新Token过期时间
+            zSet.expire(timeout, unit);
+        });
     }
 
-    public void storageUser(UserDetailsUpgrade user, String userKey) {
+    public void storageUser(UserDetailsUpgrade user, String userKey, Long timeout, TimeUnit unit) {
         String key = String.format("%s:%s", userKey, user.getUsername());
-        redisTemplate.boundValueOps(key).set(user);
+        CacheUtils.handle().boundValueOps(key).set(user, timeout, unit);
     }
 }

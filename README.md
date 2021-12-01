@@ -23,4 +23,10 @@
   - Path=/usercenter/**
   filters:
   - StripPrefix=1
+- id: test
+  uri: lb://test
+  predicates:
+  - Path=/test-server/**
+  filters:
+  - StripPrefix=1
 ```
