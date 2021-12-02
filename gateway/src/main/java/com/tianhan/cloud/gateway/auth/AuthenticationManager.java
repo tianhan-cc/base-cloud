@@ -37,9 +37,9 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
         UserLoginParam loginParam = (UserLoginParam) tmp.getDetails();
         // 校验参数
         loginParam.validate();
-//        if (!captchaHandle.validatorCaptcha(loginParam.getValidate(), loginParam.getCaptcha())) {
-//            throw new BadCredentialsException("验证码错误!");
-//        }
+        if (!captchaHandle.validatorCaptcha(loginParam.getValidate(), loginParam.getCaptcha())) {
+            throw new BadCredentialsException("验证码错误!");
+        }
         return obtainUserDetail(loginParam.getUsername())
                 .filter(u -> BC.matches(loginParam.getPassword(), u.getPassword()))
                 .switchIfEmpty(Mono.defer(() -> Mono.error(new BadCredentialsException(SystemConstant.LOGIN_ERROR_MSG))))

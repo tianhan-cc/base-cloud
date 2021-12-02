@@ -27,8 +27,11 @@ public class UserRedisCache {
         });
     }
 
-    public void updateTokenExpire(String tokenKey, String username, String accessToken, Long timeout, TimeUnit unit) {
-        CacheUtils.exec(template -> template.expire(String.format("%s:%s:%s", tokenKey, unit, accessToken), timeout, unit));
+    public void updateTokenExpire(String username, String tokenKey, String userKey, Long timeout, TimeUnit unit) {
+        CacheUtils.exec(template -> {
+            template.expire(String.format("%s:%s", tokenKey, username), timeout, unit);
+            template.expire(String.format("%s:%s", userKey, userKey), timeout, unit);
+        });
     }
 
     public void storage(UserDetail user, String accessToken, String tokenKey, String userKey, Long timeout, TimeUnit unit) {
