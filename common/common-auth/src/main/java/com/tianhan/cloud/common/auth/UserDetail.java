@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * @Description
  **/
 @Data
-public class UserDetailsUpgrade implements UserDetails {
+public class UserDetail implements UserDetails {
     private String id;
     private String username;
     private String password;
@@ -63,10 +63,10 @@ public class UserDetailsUpgrade implements UserDetails {
      */
     private String loginSource;
 
-    public UserDetailsUpgrade() {
+    public UserDetail() {
     }
 
-    public UserDetailsUpgrade(String username, String password) {
+    public UserDetail(String username, String password) {
         this.username = username;
         this.password = password;
     }

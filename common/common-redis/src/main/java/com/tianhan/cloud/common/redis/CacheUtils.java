@@ -37,14 +37,20 @@ public class CacheUtils {
         return fun.test(template);
     }
 
+    public static <V> V generalVal(String key, Class<V> vClass) {
+        return getVal(template -> template.boundValueOps(key).get(), vClass);
+    }
+
     public static <V> V getVal(Function<RedisTemplate<String, Object>, Object> fun, Class<V> vClass) {
         Object obj = fun.apply(template);
+        if (obj == null) return null;
         String json = obj.toString();
         return StringUtils.isNotBlank(json) ? JSON.parseObject(json, vClass) : null;
     }
 
     public static <V> List<V> getList(Function<RedisTemplate<String, Object>, Object> fun, Class<V> vClass) {
         Object obj = fun.apply(template);
+        if (obj == null) return null;
         String json = obj.toString();
         return StringUtils.isNotBlank(json) ? JSON.parseArray(json, vClass) : null;
     }

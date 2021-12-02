@@ -1,7 +1,7 @@
 package com.tianhan.cloud.usercenter.rpc;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.tianhan.cloud.common.auth.UserDetailsUpgrade;
+import com.tianhan.cloud.common.auth.UserDetail;
 import com.tianhan.cloud.common.auth.utils.SecurityUserUtil;
 import com.tianhan.cloud.usercenter.dao.UserDao;
 import com.tianhan.cloud.usercenter.entity.UserEntity;
@@ -34,9 +34,9 @@ public class UserRpcProvider implements IUsercenterRpc {
     }
 
     @Override
-    public UserDetailsUpgrade obtainUser(String username) {
+    public UserDetail obtainUser(String username) {
         UserDetailVO user = userDao.userinfo(username);
-        UserDetailsUpgrade result = new UserDetailsUpgrade(user.getUsername(), user.getPassword());
+        UserDetail result = new UserDetail(user.getUsername(), user.getPassword());
         BeanUtils.copyProperties(user, result);
         log.info("获取用户信息 {}", user.getUsername());
         return result;

@@ -1,6 +1,6 @@
 package com.tianhan.cloud.gateway.auth;
 
-import com.tianhan.cloud.common.auth.UserDetailsUpgrade;
+import com.tianhan.cloud.common.auth.UserDetail;
 import com.tianhan.cloud.common.auth.UserRedisCache;
 import com.tianhan.cloud.common.auth.utils.JWTUtil;
 import com.tianhan.cloud.common.core.ResponseResult;
@@ -41,7 +41,9 @@ public class AuthenticationSuccessHandler implements ServerAuthenticationSuccess
     public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
         ServerHttpRequest request = webFilterExchange.getExchange().getRequest();
         UsernamePasswordAuthenticationToken var = (UsernamePasswordAuthenticationToken) authentication;
-        UserDetailsUpgrade user = (UserDetailsUpgrade) var.getPrincipal();
+        UserDetail user = (UserDetail) var.getPrincipal();
+        // 不缓存密码
+        user.setPassword("");
         Map<String, String> claim = new HashMap<>(1);
         claim.put("USERID", user.getId());
         String token = JWTUtil.getAccessToken(user.getUsername(), SystemConstant.LOGIN_SOURCE, claim);

@@ -1,7 +1,7 @@
 package com.tianhan.cloud.gateway.auth;
 
 import com.tianhan.cloud.common.auth.SimpleTokenInfo;
-import com.tianhan.cloud.common.auth.UserDetailsUpgrade;
+import com.tianhan.cloud.common.auth.UserDetail;
 import com.tianhan.cloud.common.auth.UserRedisCache;
 import com.tianhan.cloud.common.core.SystemConstant;
 import com.tianhan.cloud.common.core.exceptions.BusinessException;
@@ -40,7 +40,7 @@ public class SecurityContextRepository implements ServerSecurityContextRepositor
         if (StringUtils.isNotBlank(token)) {
             SimpleTokenInfo info = new SimpleTokenInfo(token);
             if (cache.validateToken(info.getTokenKey(), info.getUsername(), token)) {
-                UserDetailsUpgrade user = cache.obtainUserInfo(info.getUserKey(), info.getUsername());
+                UserDetail user = cache.obtainUserInfo(info.getUserKey(), info.getUsername());
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, user.getPassword());
                 return Mono.just(new SecurityContextImpl(authentication));
             } else {

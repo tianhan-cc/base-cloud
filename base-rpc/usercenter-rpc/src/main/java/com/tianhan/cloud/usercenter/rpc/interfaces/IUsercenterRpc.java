@@ -1,6 +1,6 @@
 package com.tianhan.cloud.usercenter.rpc.interfaces;
 
-import com.tianhan.cloud.common.auth.UserDetailsUpgrade;
+import com.tianhan.cloud.common.auth.UserDetail;
 
 /**
  * @Author NieAnTai
@@ -19,7 +19,7 @@ public interface IUsercenterRpc {
      * @param username 用户名
      * @return userinfo
      */
-    UserDetailsUpgrade obtainUser(String username);
+    UserDetail obtainUser(String username);
 
     /**
      * 登录操作记录

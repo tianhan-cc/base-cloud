@@ -33,7 +33,6 @@ public class CaptchaHandle {
         String code = captcha.getCode();
         String image = captcha.getImageBase64();
         String validate = RandomUtil.randomString(8);
-
         redisTemplate.boundValueOps(obtainRedisKey(validate)).set(code, 2, TimeUnit.MINUTES);
 
         Map<String, Object> data = new HashMap<>();

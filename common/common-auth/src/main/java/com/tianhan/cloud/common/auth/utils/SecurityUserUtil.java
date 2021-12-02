@@ -2,7 +2,7 @@ package com.tianhan.cloud.common.auth.utils;
 
 import com.tianhan.cloud.common.auth.AuthContext;
 import com.tianhan.cloud.common.auth.SimpleTokenInfo;
-import com.tianhan.cloud.common.auth.UserDetailsUpgrade;
+import com.tianhan.cloud.common.auth.UserDetail;
 import com.tianhan.cloud.common.auth.UserRedisCache;
 import com.tianhan.cloud.common.core.utils.SpringBeanUtils;
 
@@ -19,12 +19,12 @@ public class SecurityUserUtil {
      *
      * @return userinfo
      */
-    public static UserDetailsUpgrade obtainUserDetail() {
+    public static UserDetail obtainUserDetail() {
         SimpleTokenInfo info = AuthContext.getJwtAttributesHolder();
         return obtainCache().obtainUserInfo(info.getUserKey(), info.getUsername());
     }
 
-    public static UserDetailsUpgrade obtainUserDetail(String token) {
+    public static UserDetail obtainUserDetail(String token) {
         SimpleTokenInfo info = new SimpleTokenInfo(token);
         return obtainCache().obtainUserInfo(info.getUserKey(), info.getUsername());
     }

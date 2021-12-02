@@ -5,6 +5,8 @@ import com.tianhan.cloud.common.auth.utils.JWTUtil;
 import com.tianhan.cloud.common.core.SystemConstant;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @Author NieAnTai
  * @Date 2021/4/19 10:38 上午
@@ -13,12 +15,15 @@ import lombok.Data;
  * @Description 简易登录用户信息
  **/
 @Data
-public final class SimpleTokenInfo {
+public final class SimpleTokenInfo implements Serializable {
     private String userid;
     private String username;
     private String platform;
     private String userKey;
     private String tokenKey;
+
+    public SimpleTokenInfo() {
+    }
 
     public SimpleTokenInfo(String accessToken) {
         DecodedJWT decoded = JWTUtil.decodedJwt(accessToken);

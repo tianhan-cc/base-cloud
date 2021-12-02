@@ -16,8 +16,8 @@ import java.util.concurrent.TimeUnit;
  **/
 @Component
 public class UserRedisCache {
-    public UserDetailsUpgrade obtainUserInfo(String userKey, String username) {
-        return CacheUtils.getVal(template -> template.boundValueOps(String.format("%s:%s", userKey, username)).get(), UserDetailsUpgrade.class);
+    public UserDetail obtainUserInfo(String userKey, String username) {
+        return CacheUtils.generalVal(String.format("%s:%s", userKey, username), UserDetail.class);
     }
 
     public boolean validateToken(String tokenKey, String username, String accessToken) {
@@ -31,7 +31,7 @@ public class UserRedisCache {
         CacheUtils.exec(template -> template.expire(String.format("%s:%s:%s", tokenKey, unit, accessToken), timeout, unit));
     }
 
-    public void storage(UserDetailsUpgrade user, String accessToken, String tokenKey, String userKey, Long timeout, TimeUnit unit) {
+    public void storage(UserDetail user, String accessToken, String tokenKey, String userKey, Long timeout, TimeUnit unit) {
         // 存储TOKEN信息
         storageToken(user.getUsername(), accessToken, tokenKey, timeout, unit);
         // 存储登录用户信息
@@ -51,7 +51,7 @@ public class UserRedisCache {
         });
     }
 
-    public void storageUser(UserDetailsUpgrade user, String userKey, Long timeout, TimeUnit unit) {
+    public void storageUser(UserDetail user, String userKey, Long timeout, TimeUnit unit) {
         String key = String.format("%s:%s", userKey, user.getUsername());
         CacheUtils.handle().boundValueOps(key).set(user, timeout, unit);
     }

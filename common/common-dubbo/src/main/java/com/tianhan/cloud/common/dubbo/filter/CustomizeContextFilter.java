@@ -23,7 +23,7 @@ public class CustomizeContextFilter implements Filter {
         SimpleTokenInfo provider = AuthContext.getJwtAttributesHolder();
 
         if (provider != null) {
-            // 传递到下一个Dubbo服务
+            // 传递到下一个Rpc服务
             context.setAttachment("info", provider);
         } else {
             consumer = (SimpleTokenInfo) context.getObjectAttachment("info");

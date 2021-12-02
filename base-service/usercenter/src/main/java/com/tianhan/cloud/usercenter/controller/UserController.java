@@ -1,6 +1,6 @@
 package com.tianhan.cloud.usercenter.controller;
 
-import com.tianhan.cloud.common.auth.UserDetailsUpgrade;
+import com.tianhan.cloud.common.auth.UserDetail;
 import com.tianhan.cloud.common.auth.utils.SecurityUserUtil;
 import com.tianhan.cloud.common.core.ResponseResult;
 import com.tianhan.cloud.common.web.controller.BaseController;
@@ -28,7 +28,7 @@ public class UserController extends BaseController {
 
     @PostMapping("/info/{username}")
     public ResponseResult info(@PathVariable String username) {
-        UserDetailsUpgrade user = SecurityUserUtil.obtainUserDetail();
+        UserDetail user = SecurityUserUtil.obtainUserDetail();
         log.info("用户 {} 与 {} 获取目标用户 {} 信息", user.getUsername(), new Date(), username);
         return doJsonOut(userService.info(username));
     }

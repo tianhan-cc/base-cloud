@@ -1,6 +1,6 @@
 package com.tianhan.cloud.gateway.auth;
 
-import com.tianhan.cloud.common.auth.UserDetailsUpgrade;
+import com.tianhan.cloud.common.auth.UserDetail;
 import com.tianhan.cloud.configuration.SecurityProperties;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.ReactiveAuthorizationManager;
@@ -29,10 +29,10 @@ public class AccessAuthorizationManager implements ReactiveAuthorizationManager<
 
     @Override
     public Mono<AuthorizationDecision> check(Mono<Authentication> authentication, AuthorizationContext object) {
-        return authentication.map(var -> check((UserDetailsUpgrade) var.getPrincipal(), object.getExchange())).defaultIfEmpty(new AuthorizationDecision(false));
+        return authentication.map(var -> check((UserDetail) var.getPrincipal(), object.getExchange())).defaultIfEmpty(new AuthorizationDecision(false));
     }
 
-    public AuthorizationDecision check(UserDetailsUpgrade user, ServerWebExchange exchange) {
+    public AuthorizationDecision check(UserDetail user, ServerWebExchange exchange) {
         boolean granted = false;
         String path = exchange.getRequest().getPath().toString();
         if (user.getAdminFlag() == 1) {
