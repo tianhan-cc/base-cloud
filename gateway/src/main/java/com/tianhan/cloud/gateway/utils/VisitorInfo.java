@@ -17,7 +17,7 @@ import java.util.Enumeration;
  * @Email nieat@foxmail.com
  * @Description 获取访问IP
  **/
-public class ObtainRemoteIp {
+public class VisitorInfo {
     private static final String UNKNOWN = "unknown";
     private static final String LOCALHOST = "127.0.0.1";
     private static final String SEPARATOR = ",";
@@ -27,7 +27,7 @@ public class ObtainRemoteIp {
 
     private final Build build;
 
-    private ObtainRemoteIp(Build build) {
+    private VisitorInfo(Build build) {
         this.build = build;
     }
 
@@ -107,8 +107,8 @@ public class ObtainRemoteIp {
             return this;
         }
 
-        public ObtainRemoteIp build() {
-            return new ObtainRemoteIp(this);
+        public VisitorInfo build() {
+            return new VisitorInfo(this);
         }
 
         public HttpHeaders getHeaders() {

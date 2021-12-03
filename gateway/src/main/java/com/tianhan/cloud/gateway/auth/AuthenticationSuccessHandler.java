@@ -6,7 +6,7 @@ import com.tianhan.cloud.common.auth.utils.JWTUtil;
 import com.tianhan.cloud.common.core.ResponseResult;
 import com.tianhan.cloud.common.core.SystemConstant;
 import com.tianhan.cloud.gateway.handle.ResponseHandler;
-import com.tianhan.cloud.gateway.utils.ObtainRemoteIp;
+import com.tianhan.cloud.gateway.utils.VisitorInfo;
 import com.tianhan.cloud.usercenter.rpc.interfaces.IUsercenterRpc;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.http.HttpStatus;
@@ -49,7 +49,7 @@ public class AuthenticationSuccessHandler implements ServerAuthenticationSuccess
         String token = JWTUtil.getAccessToken(user.getUsername(), SystemConstant.LOGIN_SOURCE, claim);
         user.setLoginSource(SystemConstant.LOGIN_SOURCE);
         userRpc.loginRecord(user.getUsername(),
-                ObtainRemoteIp.create().headers(request.getHeaders()).inetSocket(request.getRemoteAddress()).build().obtainIp(),
+                VisitorInfo.create().headers(request.getHeaders()).inetSocket(request.getRemoteAddress()).build().obtainIp(),
                 user.getLoginSource());
         // 存储用户信息
         cache.storage(user, token, SystemConstant.STORAGE_TOKEN_KEY, SystemConstant.USER_KEY, 3L, TimeUnit.HOURS);
