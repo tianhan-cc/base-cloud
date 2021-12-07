@@ -7,7 +7,7 @@
     <groupId>com.tianhan.cloud</groupId>
     <artifactId>base-cloud</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>v1.0</version>
     <modules>
         <module>gateway</module>
         <module>configcenter</module>
@@ -46,6 +46,7 @@
         <spring-boot-dependencies.version>2.3.4.RELEASE</spring-boot-dependencies.version>
         <spring-cloud-dependencies.version>Hoxton.SR8</spring-cloud-dependencies.version>
         <nacos.version>2.0.2</nacos.version>
+        <sentinel.version>1.8.2</sentinel.version>
     </properties>
 
     <dependencies>
@@ -230,6 +231,17 @@
                         <artifactId>nacos-client</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <!-- Alibaba Sentinel -->
+            <dependency>
+                <groupId>com.alibaba.csp</groupId>
+                <artifactId>sentinel-core</artifactId>
+                <version>${sentinel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.csp</groupId>
+                <artifactId>sentinel-transport-simple-http</artifactId>
+                <version>${sentinel.version}</version>
             </dependency>
 
         </dependencies>

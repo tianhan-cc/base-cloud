@@ -10,6 +10,7 @@ spring:
     password: ${datasource.password}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+
 dubbo:
   registry:
     protocol: nacos
@@ -24,3 +25,7 @@ mybatis-plus:
     # sql日志控制台打印
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: true
+
+sentinel:
+  custom:
+    random-port: false

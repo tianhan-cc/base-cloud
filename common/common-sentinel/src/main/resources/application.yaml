@@ -1,0 +1,10 @@
+sentinel:
+  custom:
+    random-port: true
+    default-port: 8719
+
+spring:
+  cloud:
+    sentinel:
+      transport:
+        dashboard: ${SENTINEl_ADDRESS:localhost:8080}

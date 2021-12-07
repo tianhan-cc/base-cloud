@@ -1,0 +1,104 @@
+version: '2.2'
+services:
+  #### 微服务 ####
+  base-mysql:
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    restart: always
+    container_name: base-mysql
+    image: mysql:latest
+    command:
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --explicit_defaults_for_timestamp=true
+      --lower_case_table_names=1
+      --max_allowed_packet=128M
+    volumes:
+      - '/opt/cloud/mysql/data:/var/lib/mysql'
+      - '/opt/cloud/mysql/logs:/var/log'
+    ports:
+      - 3336:3306
+    networks:
+      - base-net
+  base-redis:
+    image: redis:latest
+    command: redis-server --requirepass Cmtt@123 --appendonly yes
+    ports:
+      - 6389:6379
+    restart: always
+    container_name: base-redis
+    volumes:
+      - '/opt/cloud/redis/redis.conf:/etc/redis/redis.conf'
+      - '/opt/cloud/redis/data:/data'
+    networks:
+      - base-net
+  base-rabbitmq:
+    image: rabbitmq:latest
+    container_name: base-rabbitmq
+    restart: always
+    volumes:
+      - '/opt/cloud/rabbitmq:/var/lib/rabbitmq'
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - base-net
+  base-nacos:
+    image: nacos/nacos-server:latest
+    environment:
+      PREFER_HOST_MODE: ip
+      MODE: standalone
+      SPRING_DATASOURCE_PLATFORM: mysql
+      MYSQL_MASTER_SERVICE_HOST: base-mysql
+      MYSQL_MASTER_SERVICE_PORT: 3306
+      MYSQL_MASTER_SERVICE_USER: root
+      MYSQL_MASTER_SERVICE_PASSWORD: root
+      MYSQL_MASTER_SERVICE_DB_NAME: nacos
+    ports:
+      - 8848:8848
+      - 9848:9848
+      - 9849:9849
+    restart: always
+    container_name: base-nacos
+    links:
+      - base-mysql
+    networks:
+      - base-net
+  #### 基础环境 ####
+
+  #### 微服务 ####
+  gateway:
+    build:
+      context: ./gateway
+    restart: always
+    container_name: gateway
+    environment:
+      SENTINEL_ADDRESS: localhost:9088
+    ports:
+      - 8080:8080
+    links:
+      - base-mysql
+      - base-redis
+      - base-nacos
+    networks:
+      - base-net
+  usercenter:
+    build:
+      context: ./base-service/usercenter
+    restart: always
+    container_name: usercenter
+    environment:
+      SENTINEL_ADDRESS: localhost:9088
+    links:
+      - base-mysql
+      - base-redis
+      - base-nacos
+    networks:
+      - base-net
+  #### 微服务 ####
+networks:
+  base-net:
+    external: true

@@ -9,7 +9,6 @@
 流量监控: Alibaba Sentinel
 分布式事务: Seata
 队列: RabbitMq
-熔断: Hystrix
 负载: Ribbon
 认证: Spring Security
 ```

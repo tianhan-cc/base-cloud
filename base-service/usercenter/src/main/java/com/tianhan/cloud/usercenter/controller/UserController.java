@@ -3,7 +3,6 @@ package com.tianhan.cloud.usercenter.controller;
 import com.tianhan.cloud.common.auth.UserDetail;
 import com.tianhan.cloud.common.auth.utils.SecurityUserUtil;
 import com.tianhan.cloud.common.core.ResponseResult;
-import com.tianhan.cloud.common.web.controller.BaseController;
 import com.tianhan.cloud.usercenter.param.UserParam;
 import com.tianhan.cloud.usercenter.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.Random;
 
 /**
  * @Author NieAnTai
@@ -22,20 +22,26 @@ import java.util.Date;
 @Slf4j
 @RestController
 @RequestMapping("/user")
-public class UserController extends BaseController {
+public class UserController {
     @Resource
     private IUserService userService;
+    static final Random R = new Random(100);
 
     @PostMapping("/info/{username}")
     public ResponseResult info(@PathVariable String username) {
+        int rr = R.nextInt(10);
+        if (rr <= 3) {
+            throw new RuntimeException("随机异常!");
+        }
+
         UserDetail user = SecurityUserUtil.obtainUserDetail();
         log.info("用户 {} 与 {} 获取目标用户 {} 信息", user.getUsername(), new Date(), username);
-        return doJsonOut(userService.info(username));
+        return new ResponseResult(200, "请求成功!", userService.info(username));
     }
 
     @PostMapping("/add")
     public ResponseResult add(@RequestBody UserParam user) {
         userService.createUser(user);
-        return doDefaultMsg();
+        return new ResponseResult(200, "请求成功!");
     }
 }
