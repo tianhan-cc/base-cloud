@@ -21,7 +21,7 @@ ENV LC_ALL zh_CN.UTF-8
 
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-RUN mkdir -p /sentinel
+RUN mkdir -p /gateway
 
 WORKDIR /gateway
 

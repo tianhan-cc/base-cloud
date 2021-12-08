@@ -21,9 +21,9 @@ ENV LC_ALL zh_CN.UTF-8
 
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-RUN mkdir -p /sentinel
+RUN mkdir -p /usercenter
 
-WORKDIR /gateway
+WORKDIR /usercenter
 
 ADD ./target/usercenter-v1.0.jar ./
 
