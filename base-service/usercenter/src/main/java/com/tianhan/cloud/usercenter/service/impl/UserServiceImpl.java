@@ -43,7 +43,5 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
                 .setPassword(BC.encode(user.getPassword()))
                 .setCreateUser(SecurityUserUtil.obtainUserDetail().getCreateUserid())
                 .setCreateTime(new Date()).insert();
-
-        log.info("添加用户 {}", entity.getUsername());
     }
 }

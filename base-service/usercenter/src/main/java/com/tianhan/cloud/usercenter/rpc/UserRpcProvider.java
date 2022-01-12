@@ -29,16 +29,10 @@ public class UserRpcProvider implements IUsercenterRpc {
     private UserDao userDao;
 
     @Override
-    public void test() {
-        log.info("测试服务间调用token传递效果,当前用户信息 {}", SecurityUserUtil.obtainUserDetail());
-    }
-
-    @Override
     public UserDetail obtainUser(String username) {
         UserDetailVO user = userDao.userinfo(username);
         UserDetail result = new UserDetail(user.getUsername(), user.getPassword());
         BeanUtils.copyProperties(user, result);
-        log.info("获取用户信息 {}", user.getUsername());
         return result;
     }
 
@@ -47,10 +41,8 @@ public class UserRpcProvider implements IUsercenterRpc {
     public void loginRecord(String username, String loginIp, String loginSource) {
         UserEntity user = userDao.selectOne(new QueryWrapper<UserEntity>().eq("username", username));
         if (user == null) {
-            log.error("无效登录用户ID记录!");
             return;
         }
         user.setLoginTime(new Date()).setLoginIp(loginIp).updateById();
-        log.info("用户 {} 于 {} 登录系统,访问ip {}", user.getUsername(), user.getLoginTime(), user.getLoginIp());
     }
 }

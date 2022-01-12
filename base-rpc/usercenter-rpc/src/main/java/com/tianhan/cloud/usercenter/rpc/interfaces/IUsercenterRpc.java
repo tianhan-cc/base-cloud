@@ -10,9 +10,6 @@ import com.tianhan.cloud.common.auth.UserDetail;
  * @Description
  **/
 public interface IUsercenterRpc {
-
-    void test();
-
     /**
      * 获取用户信息
      *
