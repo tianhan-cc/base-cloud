@@ -28,8 +28,6 @@ public class IndexController extends BaseController {
     @GetMapping("/")
     public ResponseResult index() {
         UserDetail user = SecurityUserUtil.obtainUserDetail();
-        log.info("测试服务间调用token传递效果,当前用户信息 {}", SecurityUserUtil.obtainUserDetail());
-        rpc.test();
         return doJsonOut(user);
     }
 }

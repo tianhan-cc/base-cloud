@@ -75,6 +75,7 @@ services:
       context: ./gateway
     restart: always
     container_name: gateway
+    image: gateway
     environment:
       SENTINEL_ADDRESS: localhost:9088
     ports:
@@ -90,6 +91,7 @@ services:
       context: ./base-service/usercenter
     restart: always
     container_name: usercenter
+    image: usercenter
     environment:
       SENTINEL_ADDRESS: localhost:9088
     links:
