@@ -1,4 +1,4 @@
-FROM nimmis/java-centos
+FROM nimmis/java:openjdk-11-jdk
 
 ENV NACOS_SERVER base-nacos:8848
 ENV MYSQL_HOST base-mysql:3306
