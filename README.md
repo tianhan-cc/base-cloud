@@ -1,11 +1,11 @@
-# Base-cloud
+# cloud
 
 ## 项目结构
 ```
 gateway         网关
-configcenter    配置中心
-base-service    基础服务
-base-rpc        基础服务rpc接口
+configurations    配置中心
+services    基础服务
+interfaces       基础服务rpc接口
 common          公共包
 service-api     第三方插件API接口
 ```

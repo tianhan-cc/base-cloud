@@ -1,4 +1,0 @@
-minio:
-  url: localhost:90
-  username: root
-  secret: xxxxxxxxxx

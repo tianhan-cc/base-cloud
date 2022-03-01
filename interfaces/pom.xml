@@ -9,16 +9,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>common</artifactId>
+    <artifactId>interfaces</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>common-web</module>
-        <module>common-dubbo</module>
-        <module>common-auth</module>
-        <module>common-core</module>
-        <module>common-redis</module>
-        <module>common-sentinel</module>
-        <module>common-log</module>
+        <module>usercenter-rpc</module>
     </modules>
 
     <properties>

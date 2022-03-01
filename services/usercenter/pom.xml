@@ -3,13 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>cloud</artifactId>
+        <artifactId>services</artifactId>
         <groupId>com.tianhan.cloud</groupId>
         <version>v1.0</version>
     </parent>
+    <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>gateway</artifactId>
+    <artifactId>usercenter</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -19,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>com.tianhan.cloud</groupId>
-            <artifactId>common-redis</artifactId>
+            <artifactId>usercenter-rpc</artifactId>
             <version>v1.0</version>
         </dependency>
         <dependency>
@@ -29,7 +30,7 @@
         </dependency>
         <dependency>
             <groupId>com.tianhan.cloud</groupId>
-            <artifactId>usercenter-rpc</artifactId>
+            <artifactId>common-web</artifactId>
             <version>v1.0</version>
         </dependency>
         <dependency>
@@ -38,34 +39,13 @@
             <version>v1.0</version>
         </dependency>
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-gateway</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.tianhan.cloud</groupId>
-            <artifactId>common-auth</artifactId>
-            <version>v1.0</version>
-        </dependency>
-        <dependency>
             <groupId>com.tianhan.cloud</groupId>
             <artifactId>common-sentinel</artifactId>
             <version>v1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
         </dependency>
     </dependencies>
 
@@ -75,7 +55,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.tianhan.cloud.gateway.GatewayApplication</mainClass><!--这个要改成自己的入口类 -->
+                    <mainClass>com.tianhan.cloud.usercenter.UserCenterApplication</mainClass><!--这个要改成自己的入口类 -->
                     <includeSystemScope>true</includeSystemScope>
                 </configuration>
                 <executions>
@@ -86,14 +66,17 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>9</source>
-                    <target>9</target>
-                </configuration>
-            </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/com/tianhan/**/dao/mapper/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
     </build>
 </project>

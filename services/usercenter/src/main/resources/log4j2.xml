@@ -3,7 +3,7 @@
   <Properties>
     <Property name="LOG_FORMAT">[%d{yyyy-MM-dd HH:mm:ss,SSS}] [%t  ] [%-5level] %logger{36} - %msg%n</Property>
     <property name="LOG_HOME">/var/logs/cloud</property>
-    <Property name="ROLE_NAME">gateway</Property>
+    <Property name="ROLE_NAME">usercenter</Property>
     <Property name="MAX_BACKUP">14d</Property>
     <Property name="DEBUG_LOG">debug</Property>
     <Property name="INFO_LOG">info</Property>

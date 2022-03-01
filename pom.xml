@@ -5,16 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.tianhan.cloud</groupId>
-    <artifactId>base-cloud</artifactId>
+    <artifactId>cloud</artifactId>
     <packaging>pom</packaging>
     <version>v1.0</version>
     <modules>
         <module>gateway</module>
-        <module>configcenter</module>
+        <module>configurations</module>
         <module>common</module>
-        <module>base-rpc</module>
-        <module>base-service</module>
-        <module>service-spi</module>
+        <module>interfaces</module>
+        <module>services</module>
     </modules>
 
     <properties>

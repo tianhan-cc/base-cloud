@@ -92,6 +92,8 @@ services:
     restart: always
     container_name: usercenter
     image: usercenter
+    volumes:
+      - '/etc/localtime:/etc/localtime'
     environment:
       SENTINEL_ADDRESS: localhost:9088
     links:
